@@ -1,0 +1,8 @@
+node_modules
+*.class
+compile.bat
+target
+out
+mynote.txt
+temp.txt
+*.log
