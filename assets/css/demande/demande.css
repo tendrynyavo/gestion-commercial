@@ -1,0 +1,45 @@
+.active-item {
+    background-color: #93c944;
+    padding-top: 10px;
+    padding-bottom: 12px;
+}
+
+.item {
+    background-color: #3e4940;
+    padding-top: 10px;
+    padding-bottom: 12px;
+}
+
+.rounded-sidebar {
+    border-radius: 45px;
+}
+
+.rounded-container {
+    border-radius: 30px;
+}
+
+.form-control:focus {
+    border-color: #9ec759;
+    box-shadow: 0 0 0 0.25rem rgba(159, 199, 89, 0.248);
+}
+
+.form-select:focus {
+    border-color: #9ec759;
+    box-shadow: 0 0 0 0.25rem rgba(159, 199, 89, 0.248);
+}
+
+.btn {
+    background-color: #93c944;
+    border-color: #93c944;
+    color: white;
+    border-radius: 10px;
+}
+
+.btn:hover {
+    color: white;
+}
+
+.btn:focus {
+    border-color: #9ec759;
+    box-shadow: 0 0 0 0.25rem rgba(159, 199, 89, 0.248);
+}
