@@ -1,13 +1,19 @@
 .active-item {
     background-color: #93c944;
-    padding-top: 10px;
-    padding-bottom: 12px;
+    height: 60px;
+    width: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .item {
     background-color: #3e4940;
-    padding-top: 10px;
-    padding-bottom: 12px;
+    height: 60px;
+    width: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .rounded-sidebar {
