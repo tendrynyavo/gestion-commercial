@@ -1,12 +1,3 @@
-<%@page contentType="text/html; charset=UTF-8" %>
-<%@page import="model.besoin.Besoin" %>
-<%@page import="model.produit.Produit" %>
-<%
-
-    Besoin besoin = (Besoin) request.getAttribute("besoin");
-    Produit[] produits = (Produit[]) request.getAttribute("produits");
-
-%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -40,7 +31,7 @@
                             </a>
                         </li>
                         <li class="nav-item mt-3">
-                            <a href="/commercial/fournisseur/liste.do" class="link-dark nav-link rounded-circle item">
+                            <a href="/commercial/produit/liste-group.do" class="link-dark nav-link rounded-circle item">
                                 <i style="color: white;" class="bi-basket fs-4"></i>
                             </a>
                         </li>
@@ -56,20 +47,30 @@
                 <div class="row p-3">
                     <div class="col">
                         <div class="bg-white p-5 rounded-container shadow-sm">
-                            <h4 style="font-weight: bold" class="mb-4">Detail du demande du <%=besoin.getDate() %></h4>
+                            <h4 style="font-weight: bold" class="mb-4">Detail du demande du </h4>
                             <form action="/commercial/besoin/ajout-produit.do" method="POST">
                                 <div class="mb-4 row">
                                     <label for="article" class="col-sm-2 col-form-label">Article</label>
                                     <div class="col-sm-10">
                                         <select class="form-select" style="border-radius: 15px;" name="produit">
-                                            <% for (Produit produit : produits) { %>
-                                            <option value="<%=produit.getId() %>"><%=produit.getNom() %></option>
-                                            <% } %>
+                                            <option value="<%=produit.getId() %>"></option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="mb-4 row">
                                     <label class="col-sm-2 col-form-label">Quantite</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" name="quantite" class="form-control" style="border-radius: 15px;">
+                                    </div>
+                                </div>
+                                <div class="mb-4 row">
+                                    <label class="col-sm-2 col-form-label">Prix Unitaire</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" name="quantite" class="form-control" style="border-radius: 15px;">
+                                    </div>
+                                </div>
+                                <div class="mb-4 row">
+                                    <label class="col-sm-2 col-form-label">TVA</label>
                                     <div class="col-sm-10">
                                         <input type="text" name="quantite" class="form-control" style="border-radius: 15px;">
                                     </div>
@@ -94,14 +95,12 @@
                                   </tr>
                                 </thead>
                                 <tbody>
-                                    <% for (Produit produit : besoin.getProduits()) { %>
                                     <tr>
-                                        <th scope="row"><%=produit.getReference() %></th>
-                                        <td><%=produit.getNom() %></td>
-                                        <td><%=produit.getUnite() %></td>
-                                        <td><%=produit.getQuantite() %></td>
+                                        <th scope="row"></th>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
                                     </tr>
-                                    <% } %>
                                 </tbody>
                               </table>
                         </div>

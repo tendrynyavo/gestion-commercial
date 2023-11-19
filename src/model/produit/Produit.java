@@ -3,6 +3,8 @@ package model.produit;
 import connection.BddObject;
 import connection.annotation.ColumnName;
 import model.besoin.Besoin;
+import model.demande.Proforma;
+
 import java.sql.*;
 
 public class Produit extends BddObject {
@@ -15,12 +17,27 @@ public class Produit extends BddObject {
     Besoin besoin;
     @ColumnName("id_demande")
     String demande;
+    Proforma proforma;
+    @ColumnName("prix_unitaire")
     Double prix;
     Double tva;
+
+    public Proforma getProforma() {
+        return proforma;
+    }
+
+    public void setProforma(Proforma proforma) {
+        this.proforma = proforma;
+    }
 
     public void setPrix(Double prix){
         this.prix = prix;
     }
+
+    public void setPrix(String prix){
+        this.setPrix(Double.parseDouble(prix));
+    }
+
     public Double getPrix(){
         return this.prix;
     }
@@ -28,6 +45,11 @@ public class Produit extends BddObject {
     public void setTva( Double tva ){
         this.tva = tva;
     }
+
+    public void setTva( String tva ){
+        this.setTva(Double.parseDouble(tva));
+    }
+
     public Double getTva(){
         return this.tva;
     }
@@ -132,16 +154,14 @@ public class Produit extends BddObject {
     }
 
     public void valider() throws Exception {
-        this.setPrimaryKeyName("id_produit");
-        this.setTable("demande");
-        this.setStatus(20);
+        this.setTable(String.format("demande SET status = 15 WHERE id_produit = %s AND status == 10", this.getId()));
         this.update(null);
     }
 
-    public static Produit[] getProduitGroup(String status) throws Exception {
+    public static Produit[] getProduitGroup(String status, Connection connection) throws Exception {
         Produit produit = new Produit();
         produit.setTable(String.format("v_liste_groupe WHERE status = %s", status));
-        return (Produit[]) produit.findAll(null);
+        return (Produit[]) ((connection == null) ? produit.findAll(null) : produit.findAll(connection, null));
     }
 
     public static Produit[] getProduitGroup(Connection connection) throws Exception {

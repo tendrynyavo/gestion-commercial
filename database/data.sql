@@ -25,3 +25,10 @@ VALUES
    ('EMP00' || NEXTVAL('s_employe'), 'John', 'Doe', '123456789', 'Male', 'password1', '1990-01-01', 'john.doe@email.com', (SELECT id_departement FROM Departement WHERE nom = 'Marketing'), 'FON001'),
    ('EMP00' || NEXTVAL('s_employe'), 'Jane', 'Doe', '987654321', 'Female', 'password2', '1995-05-15', 'jane.doe@email.com', (SELECT id_departement FROM Departement WHERE nom = 'Comptabilite'), 'FON001'),
    ('EMP00' || NEXTVAL('s_employe'), 'Bob', 'Smith', '555555555', 'Male', 'password3', '1985-08-20', 'bob.smith@email.com', (SELECT id_departement FROM Departement WHERE nom = 'IT'), 'FON001');
+
+
+INSERT INTO Fournisseur (id_fournisseur, nom, email)
+VALUES 
+   ('FOUR'||LPAD(NEXTVAL('s_fournisseur')::TEXT, 3, '0'), 'ABC Electronics', 'abc.electronics@email.com'),
+   ('FOUR'||LPAD(NEXTVAL('s_fournisseur')::TEXT, 3, '0'), 'XYZ Supplies', 'xyz.supplies@email.com'),
+   ('FOUR'||LPAD(NEXTVAL('s_fournisseur')::TEXT, 3, '0'), 'Global Tech Solutions', 'global.tech@email.com');
