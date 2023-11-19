@@ -6,14 +6,20 @@ import model.departement.*;
 import model.produit.*;
 import java.util.ArrayList;
 import connection.BddObject;
+import connection.annotation.*;
 
 public class Bon extends BddObject{
 	
-	Date creation, livraison;
+	@ColumnName("date_commande")
+	Date creation;
+	@ColumnName("date_livraison")
+	Date livraison;
 	Integer status;
+	@ColumnName("mode_paiment")
 	String paiement;
 	Double avance;
-	Fournisseur fournisseur;
+	@ColumnName("id_fournisseur")
+	String fournisseur;
 
 	ArrayList<Produit> ps;
 	Produit[] produits;
@@ -65,15 +71,19 @@ public class Bon extends BddObject{
 		return this.avance;
 	}
 
-	public void setFournisseur(Fournisseur fournisseur){
+	public void setFournisseur(String fournisseur){
 		this.fournisseur = fournisseur;
 	}
-	public Fournisseur getFournisseur(){
+	public String getFournisseur(){
 		return this.fournisseur;
 	}
 
 	public ArrayList<Produit> getSomeProducts(){
 		return this.ps;
+	}
+
+	public ArrayList<Produit> getPs(){
+		return this.getSomeProducts();
 	}
 
 	public void addProduct( Produit produit ){
@@ -89,36 +99,75 @@ public class Bon extends BddObject{
 	public void generateBons() throws Exception{
 		
 
-		Connection connection = null;
+		Connection connection = this.getConnection();
 		
-		Produit[] produits = new Produit().getProduitGroup(connection);
-		Proforma[] proformas = null;
-		Fournisseur[] fournisseurs = null;
 		try{
 
+			// Produit[] produits = new Produit().getProduitGroup(connection, "15");
+			Produit[] produits = new Produit().getProduits(connection, "15");
+			Fournisseur[] fournisseurs = (Fournisseur[]) new Fournisseur().findAll(connection, null); // Maka ny fournisseur rehetra
+			Proforma[] proformas = new Proforma().getProformas(connection, fournisseurs ); // Eto no maka ny proforma an'ny Fournisseur iray
+
 			for( Produit produit : produits ){
+				
 				Proforma proforma = Proforma.moinDisant( proformas, produit );
-				Fournisseur f = new Fournisseur().getFournisseur( fournisseurs, proforma.getFournisseur() );
-				f.addToBon( produit );
+				Fournisseur f = proforma.getFournisseur();
+				int index = f.getFournisseur(fournisseurs, f);
+				// System.out.println("produit prix == " + produit.getPrix());
+				// System.out.println("produit tva == " + produit.getTva());
+				if(index >= 0) {
+					System.out.println("index is ::: " + index );
+					fournisseurs[index].addToBon( produit );
+				}
 			}
 
-			for( Fournisseur f : fournisseurs ) f.sendCommande( connection );
+			for( int i = 0; i < fournisseurs.length ; i++ ){
+				fournisseurs[i].sendCommande( connection );
+				// Adino ny ni-inserer an'ilay detail 
+				// Andao atao izany zao
+				// Mila fantatra aloha hoe avy aiza ilay izy
+			}
 			connection.commit();
 		}catch(Exception e){
 			connection.rollback();
-			e.printStackTrace();
+			// e.printStackTrace();
 			throw e;
 		}finally{
 			connection.close();
 		}
 	}
 
+	public void save(Connection connection) throws Exception{
+		
+		// Inona no tokony ataoko ato
+		// Sauvena any anatiny ilay izy
+		Produit[] ps = this.getProduits();
+		this.setProduits(null);
+		this.insert(connection);
+		String id = this.getId();
+
+		for( Produit p : ps ){
+			p.setNom(null);
+			p.setReference(null);
+			p.setUnite(null);
+			p.setStatus(null);
+			p.setQuantite((Double)null);
+			p.setBesoin(null);
+			p.setId(null);
+			p.setTable("detail_commande");
+			p.setSerial(false);
+			p.setCommande(id);
+			p.insert(connection);
+		}
+		// Boucleko ilay produits rehetra de inserena ilay izy
+	}
+
 	void init() throws Exception{
 		this.setTable("bon_de_commande");
-		this.setPrefix("PRE");
+		this.setPrefix("BON");
 		this.setConnection("PostgreSQL");
 		this.setPrimaryKeyName("id_commande");
-		this.setFunctionPK("s_bon");
+		this.setFunctionPK("nextval('s_bon')");
 		this.setCountPK(7);
 	}
 

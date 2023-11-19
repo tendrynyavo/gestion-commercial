@@ -15,8 +15,19 @@ public class Produit extends BddObject {
     Besoin besoin;
     @ColumnName("id_demande")
     String demande;
+    @ColumnName("prix_unitaire")
     Double prix;
     Double tva;
+
+    @ColumnName("id_commande")
+    String commande;
+
+    public void setCommande(String commande){
+        this.commande = commande;
+    }
+    public String getCommande(){
+        return this.commande;
+    }
 
     public void setPrix(Double prix){
         this.prix = prix;
@@ -32,22 +43,6 @@ public class Produit extends BddObject {
         return this.tva;
     }
 
-    Double prix;
-    Double tva;
-
-    public void setPrix(Double prix){
-        this.prix = prix;
-    }
-    public Double getPrix(){
-        return this.prix;
-    }
-
-    public void setTva( Double tva ){
-        this.tva = tva;
-    }
-    public Double getTva(){
-        return this.tva;
-    }
 
     public String getDemande() {
         return demande;
@@ -151,7 +146,7 @@ public class Produit extends BddObject {
     public void valider() throws Exception {
         this.setPrimaryKeyName("id_produit");
         this.setTable("demande");
-        this.setStatus(20);
+        this.setStatus(15);
         this.update(null);
     }
 
@@ -161,6 +156,19 @@ public class Produit extends BddObject {
         return (Produit[]) produit.findAll(null);
     }
 
+    public static Produit[] getProduits(Connection connection, String status) throws Exception {
+        Produit produit = new Produit();
+        produit.setTable(String.format("v_demande WHERE status = %s", status));
+        return (Produit[]) produit.findAll(null);
+    }
+
+    public static Produit[] getProduitGroup(Connection connection, String status) throws Exception {
+        Produit produit = new Produit();
+        produit.setTable(String.format("v_liste_groupe WHERE status = %s", status));
+        return (Produit[]) produit.findAll(connection, null);
+    }
+
+
     public static Produit[] getProduitGroup(Connection connection) throws Exception {
         Produit produit = new Produit();
         produit.setTable("v_liste_groupe");
@@ -169,7 +177,7 @@ public class Produit extends BddObject {
 
     // @Override
     public boolean equals( Produit p ) throws Exception{
-        return p.getId() == this.getId();
+        return String.valueOf(p.getId()).equals( String.valueOf(this.getId()));
     }
 
 }

@@ -9,10 +9,20 @@ public class Fournisseur extends BddObject{
 	
 	String nom;
 	String mail;
+
 	Bon bon;
 
-	public Fournisseur() throws Exception{
+	Proforma[] proformas;
 
+	public void setProformas( Proforma[] pd ){
+		this.proformas = pd;
+	}
+	public Proforma[] getProformas(){
+		return this.proformas;
+	}
+
+	public Fournisseur() throws Exception{
+		init();
 	}
 
 	public void setNom( String nom ){
@@ -30,6 +40,7 @@ public class Fournisseur extends BddObject{
 	}
 	
 	public void setBon(Bon bon){
+		System.out.println("okey tafiditra ato (1)");
 		this.bon = bon;
 	}
 	public Bon getBon(){
@@ -41,23 +52,31 @@ public class Fournisseur extends BddObject{
 		this.getBon().addProduct( produit );
 	}
 
-	public Fournisseur getFournisseur(Fournisseur[] fs , Fournisseur f){
+	public int getFournisseur(Fournisseur[] fs , Fournisseur f){
+		int i = 0;
 		for( Fournisseur fo : fs ){
-			if( fo.getId() == f.getId() ){
-				return fo;
-			}
+			if( fo.getId() == f.getId() ) return i;
+			i++;
 		}
-		return null;
+		return -1;
 	}
 
 	public void sendCommande( Connection connection ) throws Exception{
-		this.getBon().setFournisseur( this );
+		if( this.getBon() == null ) return;
+		this.getBon().setFournisseur( this.getId() );
 		this.getBon().finalizeProducts();
 		this.getBon().setCreation( Date.valueOf(java.time.LocalDate.now()) );
-		Produit[] ps = this.getBon().getProduits();
-		this.getBon().setProduits(null);
 		this.getBon().setStatus(10);
-		// this.getBon().insert(connection);
+		this.getBon().save(connection);
+	}
+
+	void init() throws Exception{
+		this.setTable("fournisseur");
+		this.setCountPK(7);
+		this.setFunctionPK("nextval('s_fournisseur')");
+		this.setConnection("PostgreSQL");
+		this.setPrimaryKeyName("id_fournisseur");
+		this.setPrefix("FOU");
 	}
 
 }

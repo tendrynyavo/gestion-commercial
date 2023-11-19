@@ -25,3 +25,24 @@ VALUES
    ('EMP00' || NEXTVAL('s_employe'), 'John', 'Doe', '123456789', 'Male', 'password1', '1990-01-01', 'john.doe@email.com', (SELECT id_departement FROM Departement WHERE nom = 'Marketing'), 'FON001'),
    ('EMP00' || NEXTVAL('s_employe'), 'Jane', 'Doe', '987654321', 'Female', 'password2', '1995-05-15', 'jane.doe@email.com', (SELECT id_departement FROM Departement WHERE nom = 'Comptabilite'), 'FON001'),
    ('EMP00' || NEXTVAL('s_employe'), 'Bob', 'Smith', '555555555', 'Male', 'password3', '1985-08-20', 'bob.smith@email.com', (SELECT id_departement FROM Departement WHERE nom = 'IT'), 'FON001');
+
+insert into fournisseur VALUES ('FOR00' || NEXTVAL('s_fournisseur') , 'Tendry Ny Avo' , 'tendry@gmail.com');
+insert into fournisseur VALUES ('FOR00' || NEXTVAL('s_fournisseur') , 'Manoary Sarobidy' , 'manoary@gmail.com');
+insert into fournisseur VALUES ('FOR00' || NEXTVAL('s_fournisseur') , 'Antsa Fitahiana' , 'antsa@gmail.com');
+
+insert into proforma values ('PRF00' || NEXTVAL('s_proforma') , '2023-10-10' , 'FOR001');
+insert into proforma values ('PRF00' || NEXTVAL('s_proforma') , '2023-10-11' , 'FOR002');
+insert into proforma values ('PRF00' || NEXTVAL('s_proforma') , '2023-10-12' , 'FOR003');
+
+insert into detail_proforma values (default, 'ART001', 'PRF001', 30, 2500000, 500000);
+insert into detail_proforma values (default, 'ART002', 'PRF001', 30, 1400000, 280000);
+insert into detail_proforma values (default, 'ART003', 'PRF001', 30, 6000, 1200);
+
+insert into detail_proforma values (default, 'ART001', 'PRF002', 30, 2000000, 400000);
+insert into detail_proforma values (default, 'ART004', 'PRF002', 30, 90000, 18000);
+insert into detail_proforma values (default, 'ART005', 'PRF002', 30, 80000, 160000);
+
+insert into detail_proforma values (default, 'ART001', 'PRF003', 30, 3800000, 760000);
+insert into detail_proforma values (default, 'ART002', 'PRF003', 30, 1500000, 300000);
+insert into detail_proforma values (default, 'ART003', 'PRF003', 30, 3000, 600);
+insert into detail_proforma values (default, 'ART005', 'PRF003', 30, 75000, 15000);

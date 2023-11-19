@@ -4,6 +4,7 @@ import etu2070.annotation.url;
 import etu2070.framework.ModelView;
 import model.graph.Graph;
 import model.produit.Produit;
+import model.demande.*;
 
 public class ProduitController extends Produit {
 
@@ -27,7 +28,14 @@ public class ProduitController extends Produit {
     @url("produit/liste-group.do")
     public ModelView listGroup() throws Exception {
         return new ModelView("produit/liste-group")
-            .addItem("graph", new Graph(Produit.getProduitGroup("10"), Produit.getProduitGroup("20")));
+            .addItem("graph", new Graph(Produit.getProduitGroup("10"), Produit.getProduitGroup("15")));
+    }
+
+    @url("produit/bon.do")
+    public ModelView generateBons() throws Exception{
+        Bon bon = new Bon();
+        bon.generateBons();
+        return new ModelView().sendRedirect("/commercial/produit/liste-group.do");
     }
     
 }

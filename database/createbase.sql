@@ -78,6 +78,13 @@ FROM v_demande
 WHERE status >= 10
 GROUP BY id_produit, nom, unite, reference, status;
 
+-- Okey tokony mba misy vu mi-gerer ihany izany ilay izy raha izany hoe avy aiza ilay izy
+-- Afaka atao izay zavatra izay
+-- Andao ary atao hoe maka ny commande rehetra no anaovana azy
+-- Izay angamba no mety kokoa
+-- Tsy maka avy ao amin'ny liste groupe
+
+
 CREATE SEQUENCE s_fournisseur start WITH 1 INCREMENT BY 1;
 
 CREATE TABLE Fournisseur(
@@ -106,9 +113,9 @@ CREATE TABLE detail_commande(
    prix_unitaire DOUBLE PRECISION NOT NULL,
    tva VARCHAR(50)  NOT NULL,
    id_commande VARCHAR(50)  NOT NULL,
-   id_demande VARCHAR(50)  NOT NULL,
+   id_demande integer not null,
    FOREIGN KEY(id_commande) REFERENCES bon_de_commande(id_commande),
-   FOREIGN KEY(id_demande) REFERENCES Demande(id_demande)
+   FOREIGN KEY(id_demande) REFERENCES Demande(id)
 );
 
 CREATE SEQUENCE s_proforma start WITH 1 INCREMENT BY 1;
@@ -131,3 +138,12 @@ CREATE TABLE detail_proforma(
    FOREIGN KEY(id_produit) REFERENCES Produit(id_produit),
    FOREIGN KEY(id_proforma) REFERENCES Proforma(id_proforma)
 );
+
+create or replace view v_detail_proforma_produit
+   as
+   select 
+      pf.id, pf.id_proforma, pf.quantite, pf.prix_unitaire, pf.tva,
+      p.*
+   from detail_proforma as pf
+   join produit as p 
+   on pf.id_produit = p.id_produit;
