@@ -16,6 +16,14 @@ CREATE TABLE Departement(
    PRIMARY KEY(id_departement)
 );
 
+CREATE SEQUENCE s_fonction start WITH 1 INCREMENT BY 1;
+
+CREATE TABLE Fonction(
+   id_fonction VARCHAR(50) ,
+   nom VARCHAR(50)  NOT NULL,
+   PRIMARY KEY(id_fonction)
+);
+
 CREATE SEQUENCE s_employe start WITH 1 INCREMENT BY 1;
 
 CREATE TABLE Employe(
@@ -27,10 +35,13 @@ CREATE TABLE Employe(
    password VARCHAR(100)  NOT NULL,
    date_naissance DATE,
    email VARCHAR(100)  NOT NULL,
+   id_fonction VARCHAR(50)  NOT NULL,
    id_departement VARCHAR(50) ,
    PRIMARY KEY(id_employe),
+   FOREIGN KEY(id_fonction) REFERENCES Fonction(id_fonction),
    FOREIGN KEY(id_departement) REFERENCES Departement(id_departement)
 );
+
 
 CREATE SEQUENCE s_besoin start WITH 1 INCREMENT BY 1;
 
@@ -44,10 +55,22 @@ CREATE TABLE Besoin(
 );
 
 CREATE TABLE demande(
+   id SERIAL PRIMARY KEY,
    id_produit VARCHAR(50) ,
    id_besoin VARCHAR(50) ,
-   quantite VARCHAR(50)  NOT NULL,
-   PRIMARY KEY(id_produit, id_besoin),
+   quantite DOUBLE PRECISION NOT NULL DEFAULT 0,
+   status INTEGER NOT NULL DEFAULT 0,
    FOREIGN KEY(id_produit) REFERENCES Produit(id_produit),
    FOREIGN KEY(id_besoin) REFERENCES Besoin(id_besoin)
 );
+
+CREATE OR REPLACE VIEW v_demande AS
+SELECT d.id_produit, p.nom, p.reference, p.unite, d.quantite, d.id_besoin, d.status, d.id as id_demande
+FROM demande d
+   JOIN produit p ON d.id_produit=p.id_produit;
+
+CREATE OR REPLACE VIEW v_liste_groupe AS
+SELECT id_produit, nom, unite, reference, SUM(quantite) as quantite, status
+FROM v_demande
+WHERE status >= 10
+GROUP BY id_produit, nom, unite, reference, status;
