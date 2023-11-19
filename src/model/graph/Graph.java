@@ -5,6 +5,15 @@ import model.produit.Produit;
 public class Graph {
 
     Produit[] produits;
+    Produit[] produitsBon;
+
+    public Produit[] getProduitsBon() {
+        return produitsBon;
+    }
+
+    public void setProduitsBon(Produit[] produitsBon) {
+        this.produitsBon = produitsBon;
+    }
     
     public void setProduits(Produit[] produits) {
         this.produits = produits;
@@ -15,6 +24,7 @@ public class Graph {
     }
 
     public String getLabels() {
+        if (this.getProduits().length == 0) return "";
         StringBuilder labels = new StringBuilder();
         for (Produit produit : produits) {
             labels.append("'"+ produit.getNom() + "',");
@@ -23,6 +33,7 @@ public class Graph {
     }
 
     public String getData() {
+        if (this.getProduits().length == 0) return "";
         StringBuilder labels = new StringBuilder();
         for (Produit produit : produits) {
             labels.append(produit.getQuantite() + ",");
@@ -30,8 +41,9 @@ public class Graph {
         return labels.substring(0, labels.length() - 1);
     }
 
-    public Graph(Produit[] produits) {
+    public Graph(Produit[] produits, Produit[] produits2) {
         this.setProduits(produits);
+        this.setProduitsBon(produits2);
     }
 
 }

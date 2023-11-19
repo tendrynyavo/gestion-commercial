@@ -15,7 +15,6 @@ public class Produit extends BddObject {
     Besoin besoin;
     @ColumnName("id_demande")
     String demande;
-
     Double prix;
     Double tva;
 
@@ -125,16 +124,23 @@ public class Produit extends BddObject {
         this.setConnection("PostgreSQL");
     }
 
-    public void valider() throws Exception {
+    public void postValider() throws Exception {
         this.setPrimaryKeyName("id");
         this.setTable("demande");
         this.setStatus(10);
         this.update(null);
     }
 
-    public static Produit[] getProduitGroup() throws Exception {
+    public void valider() throws Exception {
+        this.setPrimaryKeyName("id_produit");
+        this.setTable("demande");
+        this.setStatus(20);
+        this.update(null);
+    }
+
+    public static Produit[] getProduitGroup(String status) throws Exception {
         Produit produit = new Produit();
-        produit.setTable("v_liste_groupe");
+        produit.setTable(String.format("v_liste_groupe WHERE status = %s", status));
         return (Produit[]) produit.findAll(null);
     }
 
