@@ -98,7 +98,6 @@ CREATE TABLE bon_de_commande(
    FOREIGN KEY(id_fournisseur) REFERENCES Fournisseur(id_fournisseur)
 );
 
-
 CREATE TABLE detail_commande(
    id_detail_commande SERIAL PRIMARY KEY,
    prix_unitaire DOUBLE PRECISION NOT NULL,
