@@ -84,6 +84,31 @@ CREATE TABLE Fournisseur(
    PRIMARY KEY(id_fournisseur)
 );
 
+CREATE SEQUENCE s_bon start WITH 1 INCREMENT BY 1;
+
+CREATE TABLE bon_de_commande(
+   id_commande VARCHAR(50) ,
+   date_commande DATE,
+   status INTEGER NOT NULL,
+   mode_paiment VARCHAR(50) ,
+   date_livraison DATE,
+   avance DOUBLE PRECISION,
+   id_fournisseur VARCHAR(50)  NOT NULL,
+   PRIMARY KEY(id_commande),
+   FOREIGN KEY(id_fournisseur) REFERENCES Fournisseur(id_fournisseur)
+);
+
+
+CREATE TABLE detail_commande(
+   id_detail_commande SERIAL PRIMARY KEY,
+   prix_unitaire DOUBLE PRECISION NOT NULL,
+   tva VARCHAR(50)  NOT NULL,
+   id_commande VARCHAR(50)  NOT NULL,
+   id_demande VARCHAR(50)  NOT NULL,
+   FOREIGN KEY(id_commande) REFERENCES bon_de_commande(id_commande),
+   FOREIGN KEY(id_demande) REFERENCES Demande(id_demande)
+);
+
 CREATE SEQUENCE s_proforma start WITH 1 INCREMENT BY 1;
 
 CREATE TABLE Proforma(
