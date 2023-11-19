@@ -1,8 +1,9 @@
 package model.employe;
 
 import java.sql.Date;
-
 import connection.BddObject;
+import connection.annotation.ColumnName;
+import model.departement.Departement;
 
 public class Employe extends BddObject {
 
@@ -11,8 +12,18 @@ public class Employe extends BddObject {
     String telephone;
     String genre;
     String password;
+    @ColumnName("date_naissance")
     Date dateNaissance;
     String email;
+    Departement departement;
+
+    public Departement getDepartement() {
+        return departement;
+    }
+
+    public void setDepartement(Departement departement) {
+        this.departement = departement;
+    }
 
     public String getNom() {
         return nom;
@@ -68,6 +79,10 @@ public class Employe extends BddObject {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getNomPrenom() {
+        return this.getNom() + " " + this.getPrenom();
     }
     
     public Employe() throws Exception {

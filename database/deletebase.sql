@@ -1,15 +1,1 @@
-delete from resultatCandidat;
-delete from resultat;
-delete from test;
-delete from reponse;
-delete from question;
-delete from experience;
-delete from etude;
-delete from adresse;
-delete from criterecandidature;
-delete from depotcandidature;
-delete from candidatureBesoin;
-delete from candidature;
-delete from detailsAnnonce;
-delete from annonce;
-delete from besoin;
+TRUNCATE produit CASCADE;
