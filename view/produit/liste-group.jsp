@@ -76,41 +76,67 @@
                                     <td class="align-middle"><%=produit.getUnite() %></td>
                                     <td class="align-middle"><%=produit.getQuantite() %></td>
                                     <td class="align-middle"><%=produit.getStringStatus() %></td>
-                                    <td class="align-middle"><i class="bi-check fs-3"></i></td>
+                                    <td class="align-middle"><a class="link-dark" href="/commercial/produit/valider.do?id=<%=produit.getId() %>"><i class="bi-check fs-3"></i></a></td>
                                   </tr>
                                   <% } %>
                                 </tbody>
                               </table>
                         </div>
+                        <div class="bg-white p-5 rounded-container shadow-sm mt-3">
+                            <h4 style="font-weight: bold" class="mb-4">Liste des produits en attente de bon de commande</h4>
+                            <table class="table mt-4">
+                              <thead>
+                                <tr>
+                                  <th scope="col">Reference</th>
+                                  <th scope="col">Article</th>
+                                  <th scope="col">Unite</th>
+                                  <th scope="col">Quantite</th>
+                                  <th scope="col">Status</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <% for (Produit produit : graph.getProduitsBon()) { %>
+                                <tr>
+                                  <th class="align-middle" scope="row"><%=produit.getReference() %></th>
+                                  <td class="align-middle"><%=produit.getNom() %></td>
+                                  <td class="align-middle"><%=produit.getUnite() %></td>
+                                  <td class="align-middle"><%=produit.getQuantite() %></td>
+                                  <td class="align-middle"><%=produit.getStringStatus() %></td>
+                                </tr>
+                                <% } %>
+                              </tbody>
+                            </table>
+                            <a class="btn" href="">Generer un bon de commande</a>
+                          </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
       
-      <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-      
-      <script>
-        const ctx = document.getElementById('myChart');
-      
-        new Chart(ctx, {
-          type: 'doughnut',
-          data: {
-            labels: [<%=graph.getLabels() %>],
-            datasets: [{
-              label: 'Quantite',
-              data: [<%=graph.getData() %>],
-              borderWidth: 0
-            }]
-          },
-          options: {
-            scales: {
-              y: {
-                beginAtZero: true
-              }
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <script>
+      const ctx = document.getElementById('myChart');
+    
+      new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+          labels: [<%=graph.getLabels() %>],
+          datasets: [{
+            label: 'Quantite',
+            data: [<%=graph.getData() %>],
+            borderWidth: 0
+          }]
+        },
+        options: {
+          scales: {
+            y: {
+              beginAtZero: true
             }
           }
-        });
-      </script>      
+        }
+      });
+    </script>      
 </body>
 </html>

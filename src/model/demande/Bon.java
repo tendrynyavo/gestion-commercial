@@ -124,5 +124,4 @@ public class Bon extends BddObject{
 
 	// Inona daholo ny atao ato zao
 	
-
 }
