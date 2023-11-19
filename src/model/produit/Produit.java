@@ -144,4 +144,9 @@ public class Produit extends BddObject {
         return (Produit[]) produit.findAll(connection, null);
     }
 
+    // @Override
+    public boolean equals( Produit p ) throws Exception{
+        return p.getId() == this.getId();
+    }
+
 }
