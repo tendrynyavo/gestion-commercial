@@ -19,7 +19,6 @@ public class Proforma extends BddObject {
 	
 	@ColumnName("date_proforma")
 	Date date;
-	Fournisseur fournisseur;
 	Produit[] produits;
 	@ColumnName("id_fournisseur")
 	Fournisseur fournisseur;
@@ -57,12 +56,12 @@ public class Proforma extends BddObject {
 		return null;
 	}
 
-	public void setFournisseur(Fournisseur fs){
-		this.fournisseur = fs;
-	}
-	public Fournisseur getFournisseur(){
-		return this.fournisseur;
-	}
+	// public void setFournisseur(Fournisseur fs){
+	// 	this.fournisseur = fs;
+	// }
+	// public Fournisseur getFournisseur(){
+	// 	return this.fournisseur;
+	// }
 
 	public static Proforma moinDisant( Proforma[] pFs, Produit produit ) throws Exception{
 		Proforma best = pFs[0];
@@ -85,6 +84,7 @@ public class Proforma extends BddObject {
 	}
 
 	public Proforma() throws Exception{
+		super();
 		init();
 	}
 
@@ -121,15 +121,15 @@ public class Proforma extends BddObject {
 		return pfs;
 	}
 
-	public Proforma() throws Exception {
-		super();
-		this.setCountPK(7);
-		this.setFunctionPK("nextval('s_proforma')");
-		this.setPrefix("PROF");
-		this.setTable("proforma");
-		this.setConnection("PostgreSQL");
-		this.setPrimaryKeyName("id_proforma");
-	}
+	// public Proforma() throws Exception {
+	// 	super();
+	// 	this.setCountPK(7);
+	// 	this.setFunctionPK("nextval('s_proforma')");
+	// 	this.setPrefix("PROF");
+	// 	this.setTable("proforma");
+	// 	this.setConnection("PostgreSQL");
+	// 	this.setPrimaryKeyName("id_proforma");
+	// }
 
 	public void ajouterProduit(String id, String article, String quantite, String prixUnitaire, String tva) throws Exception {
         try (Connection connection = this.getConnection()) {
