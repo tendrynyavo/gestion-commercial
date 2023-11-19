@@ -74,3 +74,33 @@ SELECT id_produit, nom, unite, reference, SUM(quantite) as quantite, status
 FROM v_demande
 WHERE status >= 10
 GROUP BY id_produit, nom, unite, reference, status;
+
+CREATE SEQUENCE s_fournisseur start WITH 1 INCREMENT BY 1;
+
+CREATE TABLE Fournisseur(
+   id_fournisseur VARCHAR(50) ,
+   nom VARCHAR(100)  NOT NULL,
+   email VARCHAR(100)  NOT NULL,
+   PRIMARY KEY(id_fournisseur)
+);
+
+CREATE SEQUENCE s_proforma start WITH 1 INCREMENT BY 1;
+
+CREATE TABLE Proforma(
+   id_proforma VARCHAR(50) ,
+   date_proforma DATE,
+   id_fournisseur VARCHAR(50)  NOT NULL,
+   PRIMARY KEY(id_proforma),
+   FOREIGN KEY(id_fournisseur) REFERENCES Fournisseur(id_fournisseur)
+);
+
+CREATE TABLE detail_proforma(
+   id SERIAL PRIMARY KEY,
+   id_produit VARCHAR(50) ,
+   id_proforma VARCHAR(50) ,
+   quantite DOUBLE PRECISION,
+   prix_unitaire DOUBLE PRECISION,
+   tva DOUBLE PRECISION NOT NULL,
+   FOREIGN KEY(id_produit) REFERENCES Produit(id_produit),
+   FOREIGN KEY(id_proforma) REFERENCES Proforma(id_proforma)
+);
