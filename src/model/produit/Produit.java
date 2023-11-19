@@ -1,11 +1,13 @@
 package model.produit;
 
 import connection.BddObject;
+import connection.Column;
 import connection.annotation.ColumnName;
 import model.besoin.Besoin;
 import model.demande.Proforma;
 
 import java.sql.*;
+import java.util.List;
 
 public class Produit extends BddObject {
 
@@ -118,7 +120,11 @@ public class Produit extends BddObject {
         String status = null;
         switch (this.getStatus()) {
             case 20:
-                status = "Valide";
+                status = "Valider";
+                break;
+
+            case 15:
+                status = "En attente de bon de commande";
                 break;
 
             case 10:
@@ -154,14 +160,31 @@ public class Produit extends BddObject {
     }
 
     public void valider() throws Exception {
-        this.setTable(String.format("demande SET status = 15 WHERE id_produit = %s AND status == 10", this.getId()));
-        this.update(null);
+        try (Connection connection = this.getConnection()) {
+            try (Statement statement = connection.createStatement()) {
+                String sql = String.format("UPDATE demande SET status = 15 WHERE id_produit = '%s' AND status = 10", this.getId());
+                statement.executeUpdate(sql);
+            }
+            connection.commit();
+        }
     }
 
     public static Produit[] getProduitGroup(String status, Connection connection) throws Exception {
         Produit produit = new Produit();
         produit.setTable(String.format("v_liste_groupe WHERE status = %s", status));
         return (Produit[]) ((connection == null) ? produit.findAll(null) : produit.findAll(connection, null));
+    }
+
+    public static Produit[] getProduits(Connection connection, String status) throws Exception {
+        Produit produit = new Produit();
+        produit.setTable(String.format("v_demande WHERE status = %s", status));
+        return (Produit[]) produit.findAll(null);
+    }
+
+    public static Produit[] getProduitGroup(Connection connection, String status) throws Exception {
+        Produit produit = new Produit();
+        produit.setTable(String.format("v_liste_groupe WHERE status = %s", status));
+        return (Produit[]) produit.findAll(connection, null);
     }
 
     public static Produit[] getProduitGroup(Connection connection) throws Exception {
