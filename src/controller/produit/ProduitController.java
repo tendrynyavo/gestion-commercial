@@ -28,8 +28,10 @@ public class ProduitController extends Produit {
 
     @url("produit/liste-group.do")
     public ModelView listGroup() throws Exception {
-        return new ModelView("produit/liste-group")
-            .addItem("graph", new Graph(Produit.getProduitGroup("10"), Produit.getProduitGroup("15")));
+        try(Connection connection = new Produit().getConnection()){
+            return new ModelView("produit/liste-group")
+                .addItem("graph", new Graph(Produit.getProduitGroup("10", connection), Produit.getProduitGroup("15", connection)));
+        }
     }
 
     @url("produit/bon.do")

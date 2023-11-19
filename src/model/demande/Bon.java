@@ -113,19 +113,13 @@ public class Bon extends BddObject{
 				Proforma proforma = Proforma.moinDisant( proformas, produit );
 				Fournisseur f = proforma.getFournisseur();
 				int index = f.getFournisseur(fournisseurs, f);
-				// System.out.println("produit prix == " + produit.getPrix());
-				// System.out.println("produit tva == " + produit.getTva());
 				if(index >= 0) {
-					System.out.println("index is ::: " + index );
 					fournisseurs[index].addToBon( produit );
 				}
 			}
 
 			for( int i = 0; i < fournisseurs.length ; i++ ){
 				fournisseurs[i].sendCommande( connection );
-				// Adino ny ni-inserer an'ilay detail 
-				// Andao atao izany zao
-				// Mila fantatra aloha hoe avy aiza ilay izy
 			}
 			connection.commit();
 		}catch(Exception e){

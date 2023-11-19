@@ -23,18 +23,18 @@ public class Fournisseur extends BddObject {
 
 	Bon bon;
 
-	Proforma[] proformas;
+	// Proforma[] proformas;
 
-	public void setProformas( Proforma[] pd ){
-		this.proformas = pd;
-	}
-	public Proforma[] getProformas(){
-		return this.proformas;
-	}
+	// public void setProformas( Proforma[] pd ){
+	// 	this.proformas = pd;
+	// }
+	// public Proforma[] getProformas(){
+	// 	return this.proformas;
+	// }
 
-	public Fournisseur() throws Exception{
-		init();
-	}
+	// public Fournisseur() throws Exception{
+	// 	init();
+	// }
 
 	public void setNom( String nom ){
 		this.nom = nom;
