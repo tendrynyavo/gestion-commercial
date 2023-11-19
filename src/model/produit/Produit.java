@@ -22,12 +22,22 @@ public class Produit extends BddObject {
     Double prix;
     Double tva;
 
+    @ColumnName("id_commande")
+    String commande;
+
+    public void setCommande(String commande){
+        this.commande = commande;
+    }
+    public String getCommande(){
+        return this.commande;
+    }
     public Proforma getProforma() {
         return proforma;
     }
 
     public void setProforma(Proforma proforma) {
         this.proforma = proforma;
+
     }
 
     public void setPrix(Double prix){
@@ -53,6 +63,7 @@ public class Produit extends BddObject {
     public Double getTva(){
         return this.tva;
     }
+
 
     public String getDemande() {
         return demande;
@@ -154,6 +165,9 @@ public class Produit extends BddObject {
     }
 
     public void valider() throws Exception {
+        this.setPrimaryKeyName("id_produit");
+        this.setTable("demande");
+        this.setStatus(15);
         this.setTable(String.format("demande SET status = 15 WHERE id_produit = %s AND status == 10", this.getId()));
         this.update(null);
     }
@@ -164,10 +178,28 @@ public class Produit extends BddObject {
         return (Produit[]) ((connection == null) ? produit.findAll(null) : produit.findAll(connection, null));
     }
 
+    public static Produit[] getProduits(Connection connection, String status) throws Exception {
+        Produit produit = new Produit();
+        produit.setTable(String.format("v_demande WHERE status = %s", status));
+        return (Produit[]) produit.findAll(null);
+    }
+
+    public static Produit[] getProduitGroup(Connection connection, String status) throws Exception {
+        Produit produit = new Produit();
+        produit.setTable(String.format("v_liste_groupe WHERE status = %s", status));
+        return (Produit[]) produit.findAll(connection, null);
+    }
+
+
     public static Produit[] getProduitGroup(Connection connection) throws Exception {
         Produit produit = new Produit();
         produit.setTable("v_liste_groupe");
         return (Produit[]) produit.findAll(connection, null);
+    }
+
+    // @Override
+    public boolean equals( Produit p ) throws Exception{
+        return String.valueOf(p.getId()).equals( String.valueOf(this.getId()));
     }
 
 }
