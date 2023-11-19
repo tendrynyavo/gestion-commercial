@@ -80,13 +80,10 @@ public class Employe extends BddObject {
     public void setEmail(String email) {
         this.email = email;
     }
-<<<<<<< HEAD
-=======
 
     public String getNomPrenom() {
         return this.getNom() + " " + this.getPrenom();
     }
->>>>>>> demande
     
     public Employe() throws Exception {
         super();
