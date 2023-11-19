@@ -3,6 +3,7 @@ package model.produit;
 import connection.BddObject;
 import connection.annotation.ColumnName;
 import model.besoin.Besoin;
+import java.sql.*;
 
 public class Produit extends BddObject {
 
@@ -14,6 +15,23 @@ public class Produit extends BddObject {
     Besoin besoin;
     @ColumnName("id_demande")
     String demande;
+
+    Double prix;
+    Double tva;
+
+    public void setPrix(Double prix){
+        this.prix = prix;
+    }
+    public Double getPrix(){
+        return this.prix;
+    }
+
+    public void setTva( Double tva ){
+        this.tva = tva;
+    }
+    public Double getTva(){
+        return this.tva;
+    }
 
     public String getDemande() {
         return demande;
@@ -118,6 +136,12 @@ public class Produit extends BddObject {
         Produit produit = new Produit();
         produit.setTable("v_liste_groupe");
         return (Produit[]) produit.findAll(null);
+    }
+
+    public static Produit[] getProduitGroup(Connection connection) throws Exception {
+        Produit produit = new Produit();
+        produit.setTable("v_liste_groupe");
+        return (Produit[]) produit.findAll(connection, null);
     }
 
 }
