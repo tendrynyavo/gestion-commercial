@@ -1,9 +1,9 @@
 <%@page contentType="text/html; charset=UTF-8" %>
-<%@page import="model.besoin.Besoin" %>
 <%@page import="model.produit.Produit" %>
+<%@page import="model.demande.Proforma" %>
 <%
 
-    Besoin besoin = (Besoin) request.getAttribute("besoin");
+    Proforma proforma = (Proforma) request.getAttribute("proforma");
     Produit[] produits = (Produit[]) request.getAttribute("produits");
 
 %>
@@ -25,7 +25,7 @@
                 <div class="d-flex flex-sm-column rounded-sidebar flex-row flex-nowrap align-items-center sticky-top" style="background-color: #353e37;">
                     <ul class="p-3 nav nav-flush flex-sm-column flex-row flex-nowrap mb-auto mx-auto text-center align-items-center">
                         <li class="mt-4">
-                            <a href="/commercial/besoin/demande.do" class="link-dark nav-link rounded-circle active-item">
+                            <a href="/commercial/besoin/demande.do" class="link-dark nav-link rounded-circle item">
                                 <i style="color: white;" class="bi-bag-plus fs-4"></i>
                             </a>
                         </li>
@@ -40,7 +40,7 @@
                             </a>
                         </li>
                         <li class="nav-item mt-3">
-                            <a href="/commercial/fournisseur/liste.do" class="link-dark nav-link rounded-circle item">
+                            <a href="/commercial/fournisseur/liste.do" class="link-dark nav-link rounded-circle active-item">
                                 <i style="color: white;" class="bi-basket fs-4"></i>
                             </a>
                         </li>
@@ -56,8 +56,8 @@
                 <div class="row p-3">
                     <div class="col">
                         <div class="bg-white p-5 rounded-container shadow-sm">
-                            <h4 style="font-weight: bold" class="mb-4">Detail du demande du <%=besoin.getDate() %></h4>
-                            <form action="/commercial/besoin/ajout-produit.do" method="POST">
+                            <h4 style="font-weight: bold" class="mb-4">Detail du proforma du <%=proforma.getDate() %> par <%=proforma.getFournisseur().getNom() %></h4>
+                            <form action="/commercial/proforma/ajout-produit.do" method="POST">
                                 <div class="mb-4 row">
                                     <label for="article" class="col-sm-2 col-form-label">Article</label>
                                     <div class="col-sm-10">
@@ -74,7 +74,19 @@
                                         <input type="text" name="quantite" class="form-control" style="border-radius: 15px;">
                                     </div>
                                 </div>
-                                <input type="hidden" name="id" value="<%=besoin.getId() %>">
+                                <div class="mb-4 row">
+                                    <label class="col-sm-2 col-form-label">Prix Unitaire</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" name="prixUnitaire" class="form-control" style="border-radius: 15px;">
+                                    </div>
+                                </div>
+                                <div class="mb-4 row">
+                                    <label class="col-sm-2 col-form-label">TVA</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" name="tva" class="form-control" style="border-radius: 15px;">
+                                    </div>
+                                </div>
+                                <input type="hidden" name="id" value="<%=proforma.getId() %>">
                                 <div class="row">
                                     <button class="btn">Ajouter</button>
                                 </div>
@@ -91,15 +103,19 @@
                                     <th scope="col">Article</th>
                                     <th scope="col">Unite</th>
                                     <th scope="col">Quantite</th>
+                                    <th scope="col">Prix Unitaire</th>
+                                    <th scope="col">TVA</th>
                                   </tr>
                                 </thead>
                                 <tbody>
-                                    <% for (Produit produit : besoin.getProduits()) { %>
+                                    <% for (Produit produit : proforma.getProduits()) { %>
                                     <tr>
                                         <th scope="row"><%=produit.getReference() %></th>
                                         <td><%=produit.getNom() %></td>
                                         <td><%=produit.getUnite() %></td>
                                         <td><%=produit.getQuantite() %></td>
+                                        <td><%=produit.getPrix() %></td>
+                                        <td><%=produit.getTva() %></td>
                                     </tr>
                                     <% } %>
                                 </tbody>

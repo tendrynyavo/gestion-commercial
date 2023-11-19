@@ -1,5 +1,7 @@
 package controller.produit;
 
+import java.sql.Connection;
+
 import etu2070.annotation.url;
 import etu2070.framework.ModelView;
 import model.graph.Graph;
@@ -11,7 +13,6 @@ public class ProduitController extends Produit {
     public ProduitController() throws Exception {
         super();
     }
-
 
     @url("produit/post-valider.do")
     public ModelView postValiderProduit(String besoin) throws Exception {

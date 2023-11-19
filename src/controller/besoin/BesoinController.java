@@ -44,7 +44,7 @@ public class BesoinController extends Besoin {
     public ModelView detail() throws Exception {
         try (Connection connection = this.getConnection()) {
             return new ModelView("demande/detail")
-                .addItem("besoins", new Besoin().findAll(connection, "date_besoin DESC"))
+                .addItem("besoins", new Besoin().findAll(connection, "date_besoin ASC"))
                 .addItem("besoin", new Besoin().getBesoin(this.getId(), connection));
         }
     }
