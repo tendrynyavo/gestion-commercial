@@ -1,8 +1,8 @@
 <%@page contentType="text/html; charset=UTF-8" %>
-<%@page import="model.employe.Employe" %>
+<%@page import="model.departement.Fournisseur" %>
 <%
 
-    Employe[] employes = (Employe[]) request.getAttribute("employes");
+    Fournisseur fournisseur = (Fournisseur) request.getAttribute("fournisseur");
 
 %>
 <!DOCTYPE html>
@@ -23,7 +23,7 @@
                 <div class="d-flex flex-sm-column rounded-sidebar flex-row flex-nowrap align-items-center sticky-top" style="background-color: #353e37;">
                     <ul class="p-3 nav nav-flush flex-sm-column flex-row flex-nowrap mb-auto mx-auto text-center align-items-center">
                         <li class="mt-4">
-                            <a href="/commercial/besoin/demande.do" class="link-dark nav-link rounded-circle active-item">
+                            <a href="/commercial/besoin/demande.do" class="link-dark nav-link rounded-circle item">
                                 <i style="color: white;" class="bi-bag-plus fs-4"></i>
                             </a>
                         </li>
@@ -38,7 +38,7 @@
                             </a>
                         </li>
                         <li class="nav-item mt-3">
-                            <a href="/commercial/fournisseur/liste.do" class="link-dark nav-link rounded-circle item">
+                            <a href="/commercial/fournisseur/liste.do" class="link-dark nav-link rounded-circle active-item">
                                 <i style="color: white;" class="bi-basket fs-4"></i>
                             </a>
                         </li>
@@ -51,34 +51,17 @@
                 </div>
             </div>
             <div class="col-sm p-3 min-vh-100">
-                <div class="bg-white p-5 rounded-container w-50 shadow-sm">
-                    <h4 style="font-weight: bold" class="mb-4">Demande d'équipement</h4>
-                    <form action="/commercial/besoin/insert.do" method="POST">
+                <div class="bg-white p-5 rounded-container w-50">
+                    <h4 style="font-weight: bold" class="mb-4">Création de proforma</h4>
+                    <form action="/commercial/proforma/insert.do" method="POST">
                         <div class="mb-4 row">
                             <label for="description" class="col-sm-2 col-form-label">Date</label>
                             <div class="col-sm-10">
                                 <input type="date" name="date" id="description" class="form-control" style="border-radius: 15px;">
                             </div>
                         </div>
-                        <div class="mb-4 row">
-                            <label for="description" class="col-sm-2 col-form-label">Employe</label>
-                            <div class="col-sm-10">
-                                <select class="form-select" style="border-radius: 15px;" name="employe">
-                                    <% for (Employe employe : employes) { %>
-                                    <option value="<%=employe.getId() %>"><%=employe.getNom() %></option>
-                                    <% } %>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="mb-4 row">
-                            <label for="description" class="col-sm-2 col-form-label">Description</label>
-                            <div class="col-sm-10">
-                                <textarea name="description" id="" cols="30" rows="10" class="form-control">Aussi, je vous serais reconnaissant de bien vouloir me fournir [détail du matériel souhaité], afin que je puisse réaliser mes tâches dans des conditions de confort et de sécurité optimales.</textarea>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <button class="btn">Demander</button>
-                        </div>
+                        <input type="hidden" name="fournisseur" value="<%=fournisseur.getId() %>">
+                        <button class="btn"><i class="bi-check fs-4"></i></button>
                     </form>
                 </div>
             </div>

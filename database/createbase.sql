@@ -106,9 +106,9 @@ CREATE TABLE detail_commande(
    prix_unitaire DOUBLE PRECISION NOT NULL,
    tva VARCHAR(50)  NOT NULL,
    id_commande VARCHAR(50)  NOT NULL,
-   id_demande VARCHAR(50)  NOT NULL,
+   id_demande INTEGER  NOT NULL,
    FOREIGN KEY(id_commande) REFERENCES bon_de_commande(id_commande),
-   FOREIGN KEY(id_demande) REFERENCES Demande(id_demande)
+   FOREIGN KEY(id_demande) REFERENCES Demande(id)
 );
 
 CREATE SEQUENCE s_proforma start WITH 1 INCREMENT BY 1;
@@ -131,3 +131,8 @@ CREATE TABLE detail_proforma(
    FOREIGN KEY(id_produit) REFERENCES Produit(id_produit),
    FOREIGN KEY(id_proforma) REFERENCES Proforma(id_proforma)
 );
+
+CREATE OR REPLACE VIEW v_proforma AS
+SELECT d.id_produit, p.nom, p.reference, p.unite, d.quantite, d.id_proforma, d.prix_unitaire, d.tva
+FROM detail_proforma d
+   JOIN produit p ON d.id_produit=p.id_produit;

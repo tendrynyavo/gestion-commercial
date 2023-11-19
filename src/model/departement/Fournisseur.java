@@ -1,9 +1,24 @@
 package model.departement;
 
-public class Fournisseur{
+import java.sql.Connection;
+
+import connection.BddObject;
+import connection.annotation.ColumnName;
+import model.demande.Proforma;
+
+public class Fournisseur extends BddObject {
 	
 	String nom;
+	@ColumnName("email")
 	String mail;
+	Proforma[] proformas;
+
+	public Proforma[] getProformas() {
+		return proformas;
+	}
+	public void setProformas(Proforma[] proformas) {
+		this.proformas = proformas;
+	}
 
 	public void setNom( String nom ){
 		this.nom = nom;
@@ -19,5 +34,34 @@ public class Fournisseur{
 		return this.mail;
 	}
 	
+	public Fournisseur() throws Exception {
+		super();
+		this.setTable("fournisseur");
+		this.setPrimaryKeyName("id_fournisseur");
+		this.setConnection("PostgreSQL");
+	}
+
+	public Fournisseur(String id) throws Exception {
+		this();
+		this.setId(id);
+	}
+
+	public Fournisseur getFournisseur(String id, Connection connection) throws Exception {
+		Fournisseur fournisseur = null;
+		boolean connect = false;
+		try {
+			if (connection == null) {
+				connection = this.getConnection();
+				connect = true;
+			}
+			fournisseur = (Fournisseur) new Fournisseur(id).getById(connection);
+			fournisseur.setProformas((Proforma[]) new Proforma().setFournisseur(fournisseur).findAll(connection, "date_proforma ASC"));
+		} finally {
+			if (connect) {
+				connection.close();
+			}
+		}
+		return fournisseur;
+	}
 
 }

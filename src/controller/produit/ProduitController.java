@@ -1,5 +1,7 @@
 package controller.produit;
 
+import java.sql.Connection;
+
 import etu2070.annotation.url;
 import etu2070.framework.ModelView;
 import model.graph.Graph;
@@ -10,7 +12,6 @@ public class ProduitController extends Produit {
     public ProduitController() throws Exception {
         super();
     }
-
 
     @url("produit/post-valider.do")
     public ModelView postValiderProduit(String besoin) throws Exception {
@@ -26,8 +27,10 @@ public class ProduitController extends Produit {
 
     @url("produit/liste-group.do")
     public ModelView listGroup() throws Exception {
-        return new ModelView("produit/liste-group")
-            .addItem("graph", new Graph(Produit.getProduitGroup("10"), Produit.getProduitGroup("20")));
+        try (Connection connection = this.getConnection()) {
+            return new ModelView("produit/liste-group")
+                .addItem("graph", new Graph(Produit.getProduitGroup("10", connection), Produit.getProduitGroup("20", connection)));   
+        }
     }
     
 }
