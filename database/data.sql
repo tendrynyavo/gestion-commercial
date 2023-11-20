@@ -49,4 +49,3 @@ insert into detail_proforma values (default, 'ART001', 'PRF003', 30, 3800000, 20
 insert into detail_proforma values (default, 'ART002', 'PRF003', 30, 1500000, 20);
 insert into detail_proforma values (default, 'ART003', 'PRF003', 30, 3000, 20);
 insert into detail_proforma values (default, 'ART005', 'PRF003', 30, 75000, 20);
-

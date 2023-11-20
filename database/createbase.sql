@@ -1,6 +1,7 @@
 drop database if exists commercial;
 create database commercial;
 \c commercial;
+
 CREATE SEQUENCE s_produit start WITH 1 INCREMENT BY 1;
 
 CREATE TABLE Produit(
@@ -153,3 +154,13 @@ CREATE OR REPLACE VIEW v_proforma AS
 SELECT d.id_produit, p.nom, p.reference, p.unite, d.quantite, d.id_proforma, d.prix_unitaire, d.tva
 FROM detail_proforma d
    JOIN produit p ON d.id_produit=p.id_produit;
+
+CREATE or replace view v_detail_commande
+   as
+   select 
+      d_c.id_detail_commande, d_c.prix_unitaire, d_c.tva, d_c.id_commande,
+      v_d.*
+   from detail_commande as d_c
+   join v_demande as v_d
+      on  d_c.id_demande = v_d.id_demande;
+

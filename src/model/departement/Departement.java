@@ -24,4 +24,6 @@ public class Departement extends BddObject {
         this.setPrimaryKeyName("id_departement");
     }
 
+    
+
 }
