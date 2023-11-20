@@ -1,5 +1,6 @@
 package model.demande;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.Date;
 import model.departement.*;
@@ -11,6 +12,7 @@ import java.util.ArrayList;
 import connection.Bdd;
 import connection.BddObject;
 import connection.annotation.*;
+import pl.allegro.finance.tradukisto.*;
 
 public class Bon extends Validation {
 	
@@ -196,14 +198,20 @@ public class Bon extends Validation {
 		this.setCountPK(7);
 	}
 
-
-	public double getMontant() throws Exception{
-		double montant = 0;
-		for( Produit p : this.getProduits() ) montant = montant + p.getPrixTTC();
+	public double getPrixHT() throws Exception{
+		double montant = 0.0;
+		for( Produit p : this.getProduits() ) montant = montant + p.getPrix();
 		return montant;
 	}
 
-	public double getTVATotal() throws Exception{
+
+	public BigDecimal getMontant() throws Exception{
+		double montant = 0.0;
+		for( Produit p : this.getProduits() ) montant = montant + p.getMontant();
+		return BigDecimal.valueOf(montant);
+	}
+
+	public Double getTVATotal() throws Exception{
 		double tva = 0;
 		for( Produit p : this.getProduits() ) tva = tva + p.getPrix();
 		return (20 * tva) / 100.0;
@@ -328,6 +336,11 @@ public class Bon extends Validation {
             }
         }
         return bon;
+    }
+
+    public String getMontantAsLetter() throws Exception{
+    	MoneyConverters converter = MoneyConverters.FRENCH_BANKING_MONEY_VALUE;
+    	return converter.asWords( this.getMontant() ).split("\\u20AC")[0];
     }
 
 }

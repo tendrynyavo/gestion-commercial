@@ -114,6 +114,7 @@
                                         <th scope="col">Quantite</th>
                                         <th scope="col">Prix Unitaire</th>
                                         <th scope="col">TVA</th>
+                                        <th scope="col">Montant</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -124,11 +125,49 @@
                                         <td class="align-middle"><%=produit.getUnite() %></td>
                                         <td class="align-middle"><%=produit.getQuantite() %></td>
                                         <td class="align-middle"><%=produit.getPrix() %></td>
-                                        <td class="align-middle"><%=produit.getTva() %></td>
+                                        <td class="align-middle"><%=produit.getTvaPrice() %></td>
+                                        <td class="align-middle"><%=produit.getMontant() %></td>
                                     </tr>
                                     <% } %>
+                                    <tr>
+                                        <th>Montant</th>
+                                        <td>N/A</td>
+                                        <td>N/A</td>
+                                        <td>N/A</td>
+                                        <td><%= detail.getPrixHT() %></td>
+                                        <td><%= detail.getTVATotal()  %></td>
+                                        <td><%= detail.getMontant()  %></td>
+                                    </tr>
                                 </tbody>
-                            </table>
+                                <tfoot>
+
+                                    <tr>
+                                        <table>
+                                            <thead>
+                                                <th>La société</th>
+                                                <th></th>
+                                                <th></th>
+                                                <th></th>
+                                                <th>Le fournisseur</th>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>Société Milay</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td><%= detail.getNom() %></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+
+                                    </tr>
+                                </tfoot>
+                            </table>                                        
+                            Arrété le present bon de commande à la somme de 
+                            <strong>
+                                <%= detail.getMontantAsLetter() %> Ariary, le <%= java.time.LocalDate.now() %>
+                            </strong>
                             <a href="" class="btn">Valider</a>
                         </div>
                         <% } %>
