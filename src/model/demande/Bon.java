@@ -257,8 +257,7 @@ public class Bon extends BddObject{
 
 	public void setDetails( Connection connection) throws Exception{
 		Produit produit = new Produit();
-		produit.setTable(String.format("v_detail_commande where id_commande = '%s
-			'", this.getId()));
+		produit.setTable(String.format("v_detail_commande where id_commande = '%s'", this.getId()));
 		Produit[] produits = (Produit[]) produit.findAll(connection, null);
 		this.setProduits(produits);
 	}
@@ -273,12 +272,15 @@ public class Bon extends BddObject{
 			for( Produit p : bon.getProduits() ){
 				p.setStatus(20);
 				p.setTable("demande");
+				p.setPrimaryKeyName("id");
 				p.setPrix((Double)null);
 				p.setTva((Double)null);
-				p.setId(null);
+				p.setId(p.getDemande());
+				p.setDemande(null);
 				p.setNom(null);
 				p.setReference(null);
 				p.setUnite(null);
+				p.setCommande(null);
 				p.update(connection);
 			}
 			connection.commit();
