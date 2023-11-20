@@ -82,7 +82,6 @@
                                     <td class="align-middle"><%=produit.getUnite() %></td>
                                     <td class="align-middle"><%=produit.getQuantite() %></td>
                                     <td class="align-middle"><%=produit.getStringStatus() %></td>
-                                    <td class="align-middle"><a href="" class="btn">Proforma</a></td>
                                     <td class="align-middle"><a class="link-dark" href="/commercial/produit/valider.do?id=<%=produit.getId() %>"><i class="bi-check fs-3"></i></a></td>
                                   </tr>
                                   <% } %>

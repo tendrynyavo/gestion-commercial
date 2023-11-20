@@ -6,7 +6,10 @@ import connection.annotation.ColumnName;
 import model.besoin.Besoin;
 import model.demande.Proforma;
 import model.validation.Validation;
+
+import java.math.RoundingMode;
 import java.sql.*;
+import java.text.DecimalFormat;
 import java.util.List;
 
 public class Produit extends Validation {
@@ -182,6 +185,12 @@ public class Produit extends Validation {
     // @Override
     public boolean equals( Produit p ) throws Exception{
         return String.valueOf(p.getId()).equals( String.valueOf(this.getId()));
+    }
+
+    public static String format(double number) {
+        DecimalFormat df = new DecimalFormat("#.##");
+        df.setRoundingMode(RoundingMode.CEILING);
+        return df.format(number);
     }
 
 }

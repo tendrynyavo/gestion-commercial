@@ -8,7 +8,8 @@ import model.produit.*;
 import model.validation.Validation;
 
 import java.util.ArrayList;
-
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import connection.Bdd;
 import connection.BddObject;
 import connection.annotation.*;
@@ -205,10 +206,10 @@ public class Bon extends Validation {
 	}
 
 
-	public BigDecimal getMontant() throws Exception{
+	public double getMontant() throws Exception{
 		double montant = 0.0;
 		for( Produit p : this.getProduits() ) montant = montant + p.getMontant();
-		return BigDecimal.valueOf(montant);
+		return montant;
 	}
 
 	public Double getTVATotal() throws Exception{
@@ -340,14 +341,14 @@ public class Bon extends Validation {
 
     public String getMontantAsLetter() throws Exception{
     	MoneyConverters converter = MoneyConverters.FRENCH_BANKING_MONEY_VALUE;
-    	return converter.asWords( this.getMontant() ).split("\\u20AC")[0];
+    	return converter.asWords( BigDecimal.valueOf(this.getMontant()) ).split("\\u20AC")[0];
     }
 
     // Inona ny eto
 
     public long livraisonToDays(){
     	if( this.getLivraison() == null ) return 0;
-    	return java.time.Duration.between(java.time.LocalDate.now(), this.getLivraison().toLocalDate()).toDays();
+		return ChronoUnit.DAYS.between(java.time.LocalDate.now(), this.getLivraison().toLocalDate());
     }
 
 }

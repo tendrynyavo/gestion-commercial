@@ -1,6 +1,7 @@
 <%@page contentType="text/html; charset=UTF-8" %>
 <%@page import="model.demande.Bon" %>
 <%@page import="model.produit.Produit" %>
+<%@page import="java.math.BigDecimal" %>
 <%
 
     Bon[] bons = (Bon[]) request.getAttribute("bons");
@@ -99,7 +100,7 @@
                                             <li>Status : <%=detail.getStringStatus() %></li>
                                             <li>Mode paiement : <%=detail.getPaiement() %></li>
                                             <li>Date de livraison : <%=detail.getLivraison() %></li>
-                                            <li>Avance : <%=detail.getAvance() %> et le reste dans <%= detail.livraisonToDays() %> jours </li>
+                                            <li>Avance : <%=detail.getAvance() %> % et le reste dans <%= detail.livraisonToDays() %> jours </li>
                                         </ul>
                                     </div>
                                 </div>
@@ -126,7 +127,7 @@
                                         <td class="align-middle"><%=produit.getQuantite() %></td>
                                         <td class="align-middle"><%=produit.getPrix() %></td>
                                         <td class="align-middle"><%=produit.getTvaPrice() %></td>
-                                        <td class="align-middle"><%=produit.getMontant() %></td>
+                                        <td class="align-middle"><%=Produit.format(produit.getMontant()) %></td>
                                     </tr>
                                     <% } %>
                                     <tr>
@@ -136,7 +137,7 @@
                                         <td>N/A</td>
                                         <td><%= detail.getPrixHT() %></td>
                                         <td><%= detail.getTVATotal()  %></td>
-                                        <td><%= detail.getMontant()  %></td>
+                                        <td><%= Produit.format(detail.getMontant())  %></td>
                                     </tr>
                                 </tbody>
                                 <tfoot>
@@ -163,12 +164,14 @@
 
                                     </tr>
                                 </tfoot>
-                            </table>                                        
-                            Arrété le present bon de commande à la somme de 
-                            <strong>
-                                <%= detail.getMontantAsLetter() %> Ariary, le <%= java.time.LocalDate.now() %>
-                            </strong>
-                            <a href="" class="btn">Valider</a>
+                            </table>
+                            <div>
+                                Arrété le present bon de commande à la somme de 
+                                <strong>
+                                    <%= detail.getMontantAsLetter() %> Ariary, le <%= java.time.LocalDate.now() %>
+                                </strong>
+                            </div>                                        
+                            <a href="/commercial/bon/pass-third-validation.do?idBon=<%=detail.getId() %>" class="btn mt-3">Valider</a>
                         </div>
                         <% } %>
                     </div>

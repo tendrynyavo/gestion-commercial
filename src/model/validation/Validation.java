@@ -17,6 +17,10 @@ public class Validation extends BddObject {
     public String getStringStatus() {
         String status = null;
         switch (this.getStatus()) {
+            case 25:
+                status = "Confirmer";
+                break;
+
             case 20:
                 status = "Valider";
                 break;
