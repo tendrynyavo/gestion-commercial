@@ -51,6 +51,10 @@ public class Produit extends Validation {
         this.prix = prix;
     }
 
+    public Double getMontant(){
+        return this.getQuantite() * this.getPrixTTC();
+    }
+
     public void setPrix(String prix){
         this.setPrix(Double.parseDouble(prix));
     }
