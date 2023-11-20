@@ -45,6 +45,10 @@ public class Bon extends BddObject{
 	public void setLivraison(Date creation){
 		this.livraison = creation;
 	}
+
+	public void setLivraison(String creation){
+		this.setLivraison(Date.valueOf(creation));
+	}
 	public Date getLivraison(){
 		return this.livraison;
 	}
@@ -66,6 +70,9 @@ public class Bon extends BddObject{
 
 	public void setAvance(Double avance){
 		this.avance = avance;
+	}
+	public void setAvance(String avance){
+		this.setAvance(Double.parseDouble(avance));
 	}
 	public Double getAvance(){
 		return this.avance;
@@ -165,6 +172,109 @@ public class Bon extends BddObject{
 		this.setCountPK(7);
 	}
 
+	public double getMontant() throws Exception{
+		double montant = 0;
+		for( Produit p : this.getProduits() ) montant = montant + p.getPrixTTC();
+		return montant;
+	}
+
+	public double getTVATotal() throws Exception{
+		double tva = 0;
+		for( Produit p : this.getProduits() ) tva = tva + p.getPrix();
+		return (20 * tva) / 100.0;
+	}
+
 	// Inona daholo ny atao ato zao
-	
+
+	public void modify( String mode, String date, String avance, String id ) throws Exception{
+		Connection connection = this.getConnection();
+		try{
+			Bon bon = new Bon();
+			bon.setId(id);
+			bon = (Bon) bon.getById(connection);
+			bon.setPaiement(mode);
+			bon.setLivraison(date);
+			bon.setAvance(avance);
+			bon.update(connection);
+			connection.commit();
+		}catch(Exception e){
+			connection.rollback();
+			throw e;
+		}finally{
+			connection.close();
+		}
+	}
+
+	/// mandeha aloha ny premiere validation
+	// Rehefa premiere validation de lasa status 10
+
+	Bon updateStatus(Connection connection, String status) throws Exception{
+		Bon bon = new Bon();
+		bon.setId(idBon);
+		bon = (Bon) bon.getById(connection);
+		bon.setStatus("10");
+		bon.update(connection);
+		return bon;
+	}
+
+	public void passFirstValidation( String idBon ) throws Exception{
+		
+		Connection connection = this.getConnection();
+		try{
+			this.updateStatus(connection, "10");
+			connection.commit();
+		}catch(Exception e){
+			connection.rollback();
+			throw e;
+		}finally{
+			connection.close();
+		}
+	}
+
+	public void passSecondValidation(String idBon) throws Exception{
+		Connection connection = this.getConnection();
+		try{
+			this.updateStatus(connection, "20");
+			connection.commit();
+		}catch(Exception e){
+			connection.rollback();
+			throw e;
+		}finally{
+			connection.close();
+		}	
+	}
+
+	public void setDetails( Connection connection) throws Exception{
+		Produit produit = new Produit();
+		produit.setTable(String.format("v_detail_commande where id_commande = '%'", this.getId()));
+		Produit[] produits = (Produit[]) produit.findAll(connection, null);
+		this.setProduits(produits);
+	}
+
+
+	// Ato izy no mila tenenina hoe alaivo daholo ny detail commande rehetra
+	public void passThirdValidation(String idBon) throws Exception{
+		Connection connection = this.getConnection();
+		try{
+			Bon bon = this.updateStatus(connection, "25");
+			bon.setDetails(connection);
+			for( Produit p : bon.getProduits() ){
+				p.setStatus("20");
+				p.setTable("demande");
+				p.setPrix(null);
+				p.setTva(null);
+				p.setId(null);
+				p.setNom(null);
+				p.setReference(null);
+				p.setUnite(null);
+				p.update(connection);
+			}
+			connection.commit();
+		}catch(Exception e){
+			connection.rollback();
+			throw e;
+		}finally{
+			connection.close();
+		}	
+	}
 }
