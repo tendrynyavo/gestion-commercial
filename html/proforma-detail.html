@@ -22,7 +22,7 @@
                         </li>
                         <li class="nav-item mt-3">
                             <a href="#" class="link-dark nav-link rounded-circle item">
-                                <i style="color: white;" class="bi-list-nested fs-4"></i>
+                                <i style="color: white;" class="bi-box-seam fs-4"></i>
                             </a>
                         </li>
                         <li class="nav-item mt-3">
@@ -102,10 +102,48 @@
                             </table>
                             <a href="" class="btn"><i class="bi-plus fs-4"></i></a>
                         </div>
+                        <div class="p-4 bg-white rounded-container mt-4 shadow-sm">
+                            <h4 style="font-weight: bold" class="mb-4">Evolution des prix</h4>
+                            <canvas id="myChart"></canvas>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+
+        const ctx = document.getElementById('myChart');
+    
+        const labels = [1, 2, 3, 4, 5, 6, 7];
+        const data = {
+            labels: labels,
+            datasets: [{
+                label: 'My First Dataset',
+                data: [65, 59, 80, 81, 56, 55, 40],
+                fill: false,
+                tension: 0.1
+            },{
+                label: 'My First Dataset',
+                data: [65, 59, 100, 81, 56, 55, 40],
+                fill: false,
+                tension: 0.1
+            }]
+        };
+
+        new Chart(ctx, {
+            type: 'line',
+            data: data,
+            options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+            }
+        });
+
+    </script>
 </body>
 </html>
