@@ -5,17 +5,16 @@ import connection.Column;
 import connection.annotation.ColumnName;
 import model.besoin.Besoin;
 import model.demande.Proforma;
-
+import model.validation.Validation;
 import java.sql.*;
 import java.util.List;
 
-public class Produit extends BddObject {
+public class Produit extends Validation {
 
     String nom;
     String reference;
     String unite;
     Double quantite;
-    Integer status;
     Besoin besoin;
     @ColumnName("id_demande")
     String demande;
@@ -23,7 +22,6 @@ public class Produit extends BddObject {
     @ColumnName("prix_unitaire")
     Double prix;
     Double tva;
-
     @ColumnName("id_commande")
     String commande;
 
@@ -82,14 +80,6 @@ public class Produit extends BddObject {
         this.demande = demande;
     }
 
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
-
     public Besoin getBesoin() {
         return besoin;
     }
@@ -132,32 +122,6 @@ public class Produit extends BddObject {
 
     public void setUnite(String unite) {
         this.unite = unite;
-    }
-
-    public String getStringStatus() {
-        String status = null;
-        switch (this.getStatus()) {
-            case 20:
-                status = "Valider";
-                break;
-
-            case 15:
-                status = "En attente de bon de commande";
-                break;
-
-            case 10:
-                status = "Post-valide";
-                break;
-
-            case 0:
-                status = "En attente";
-                break;
-        
-            default:
-                status = "";
-                break;
-        }
-        return status;
     }
 
     public Produit() throws Exception {

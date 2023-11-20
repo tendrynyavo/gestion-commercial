@@ -4,22 +4,27 @@ import java.sql.Connection;
 import java.sql.Date;
 import model.departement.*;
 import model.produit.*;
+import model.validation.Validation;
+
 import java.util.ArrayList;
+
+import connection.Bdd;
 import connection.BddObject;
 import connection.annotation.*;
 
-public class Bon extends BddObject{
+public class Bon extends Validation {
 	
 	@ColumnName("date_commande")
 	Date creation;
 	@ColumnName("date_livraison")
 	Date livraison;
-	Integer status;
 	@ColumnName("mode_paiment")
 	String paiement;
 	Double avance;
 	@ColumnName("id_fournisseur")
 	String fournisseur;
+	String nom;
+	String email;
 
 	ArrayList<Produit> ps;
 	Produit[] produits;
@@ -33,6 +38,22 @@ public class Bon extends BddObject{
 	// public void setAvance(String avance){
 	// 	this.setAvance(Double.parseDouble(avance));
 	// }
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getNom() {
+		return nom;
+	}
+
+	public void setNom(String nom) {
+		this.nom = nom;
+	}
 
 	public Bon() throws Exception{
 		init();
@@ -61,13 +82,6 @@ public class Bon extends BddObject{
 	}
 	public Date getLivraison(){
 		return this.livraison;
-	}
-
-	public void setStatus(Integer status){
-		this.status = status;
-	}
-	public Integer getStatus(){
-		return this.status;
 	}
 
 
@@ -257,8 +271,7 @@ public class Bon extends BddObject{
 
 	public void setDetails( Connection connection) throws Exception{
 		Produit produit = new Produit();
-		produit.setTable(String.format("v_detail_commande where id_commande = '%s
-			'", this.getId()));
+		produit.setTable(String.format("v_detail_commande where id_commande = '%s'", this.getId()));
 		Produit[] produits = (Produit[]) produit.findAll(connection, null);
 		this.setProduits(produits);
 	}
@@ -289,5 +302,29 @@ public class Bon extends BddObject{
 			connection.close();
 		}	
 	}
+
+	public Bon getBonDeCommande(String id, Connection connection) throws Exception {
+        boolean connect = false;
+        Bon bon = null;
+        try {
+			if (id == null) return null;
+			if (connection == null) {
+				connection = this.getConnection();
+                connect = true;
+            }
+            bon = (Bon) ((BddObject) new Bon().setTable("v_bon_commande_fournisseur")).setId(id).getById(connection);
+			Produit produit = new Produit();
+            produit.setCommande(bon.getId());
+            produit.setTable("v_detail_commande");
+            if (bon != null) {
+				bon.setProduits((Produit[]) produit.findAll(connection, "nom"));
+            }
+        } finally {
+            if (connect) {
+                connection.close();
+            }
+        }
+        return bon;
+    }
 
 }

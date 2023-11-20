@@ -40,6 +40,11 @@
                             </a>
                         </li>
                         <li class="nav-item mt-3">
+                            <a href="/commercial/bon/detail.do" class="link-dark nav-link rounded-circle item">
+                                <i style="color: white;" class="bi-receipt fs-4"></i>
+                            </a>
+                        </li>
+                        <li class="nav-item mt-3">
                             <a href="#" class="link-dark nav-link rounded-circle item">
                                 <i style="color: white;" class="bi-box-arrow-left fs-4"></i>
                             </a>
