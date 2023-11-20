@@ -3,6 +3,7 @@
 <%
 
     Employe[] employes = (Employe[]) request.getAttribute("employes");
+    Employe employe = (Employe) request.getAttribute("employe");
 
 %>
 <!DOCTYPE html>
@@ -60,16 +61,7 @@
                                 <input type="date" name="date" id="description" class="form-control" style="border-radius: 15px;">
                             </div>
                         </div>
-                        <div class="mb-4 row">
-                            <label for="description" class="col-sm-2 col-form-label">Employe</label>
-                            <div class="col-sm-10">
-                                <select class="form-select" style="border-radius: 15px;" name="employe">
-                                    <% for (Employe employe : employes) { %>
-                                    <option value="<%=employe.getId() %>"><%=employe.getNom() %></option>
-                                    <% } %>
-                                </select>
-                            </div>
-                        </div>
+                        <input type="hidden" name="employe" value="<%=employe.getId() %>">
                         <div class="mb-4 row">
                             <label for="description" class="col-sm-2 col-form-label">Description</label>
                             <div class="col-sm-10">

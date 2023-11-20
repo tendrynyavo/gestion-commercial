@@ -1,8 +1,10 @@
 package controller.besoin;
 
 import java.sql.Connection;
+import java.util.HashMap;
 
 import etu2070.annotation.auth;
+import etu2070.annotation.session;
 import etu2070.annotation.url;
 import etu2070.framework.ModelView;
 import model.besoin.Besoin;
@@ -11,15 +13,28 @@ import model.produit.Produit;
 
 public class BesoinController extends Besoin {
 
+    HashMap<String, Object> session;
+
+    public HashMap<String, Object> getSession() {
+        return session;
+    }
+
+    public void setSession(HashMap<String, Object> session) {
+        this.session = session;
+    }
+
     public BesoinController() throws Exception {
         super();
     }
 
     @auth
+    @session
     @url("besoin/demande.do")
     public ModelView formulaire() throws Exception {
+        Employe employe = (Employe) getSession().get("employe");
         return new ModelView("demande/demande")
-            .addItem("employes", new Employe().findAll(null));
+            .addItem("employes", new Employe().findAll(null))
+            .addItem("employe", employe);
     }
 
     @auth
