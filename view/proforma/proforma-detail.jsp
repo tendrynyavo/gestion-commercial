@@ -2,9 +2,11 @@
 <%@page import="model.demande.Proforma" %>
 <%@page import="model.produit.Produit" %>
 <%@page import="model.departement.Fournisseur" %>
+<%@page import="model.departement.Graph" %>
 <%
 
     Fournisseur fournisseur = (Fournisseur) request.getAttribute("fournisseur");
+    Graph graph = fournisseur.createGraph();
     Proforma detail = (Proforma) request.getAttribute("proforma");
 
 %>
@@ -25,14 +27,9 @@
             <div class="col-sm-auto sticky-top m-3 rounded-sidebar shadow-sm" style="background-color: #353e37;">
                 <div class="d-flex flex-sm-column rounded-sidebar flex-row flex-nowrap align-items-center sticky-top" style="background-color: #353e37;">
                     <ul class="p-3 nav nav-flush flex-sm-column flex-row flex-nowrap mb-auto mx-auto text-center align-items-center">
-                        <li class="mt-4">
-                            <a href="#" class="link-dark nav-link rounded-circle item">
-                                <i style="color: white;" class="bi-bag-plus fs-4"></i>
-                            </a>
-                        </li>
                         <li class="nav-item mt-3">
                             <a href="/commercial/besoin/detail.do" class="link-dark nav-link rounded-circle item">
-                                <i style="color: white;" class="bi-list-nested fs-4"></i>
+                                <i style="color: white;" class="bi-box-seam fs-4"></i>
                             </a>
                         </li>
                         <li class="nav-item mt-3">
@@ -81,7 +78,7 @@
                     </div>
                     <div class="col-8">
                         <% if (detail != null) { %>
-                        <div class="bg-white p-5 rounded-container shadow-sm">
+                        <div class="bg-white p-5 rounded-container shadow-sm mb-4">
                             <h4 style="font-weight: bold" class="mb-4">Detail de proforma</h4>
                             <div class="d-flex">
                                 <div class="col">
@@ -104,7 +101,6 @@
                                         <th scope="col">Quantite</th>
                                         <th scope="col">Prix Unitaire</th>
                                         <th scope="col">TVA</th>
-                                        <th scope="col"></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -116,7 +112,6 @@
                                         <td class="align-middle"><%=produit.getQuantite() %></td>
                                         <td class="align-middle"><%=produit.getPrix() %></td>
                                         <td class="align-middle"><%=produit.getTva() %></td>
-                                        <td class="align-middle"><a class="link-dark" href="/commercial/produit/post-valider.do?id=<%=produit.getDemande() %>&besoin=<%=detail.getId() %>"><i class="bi-check fs-3"></i></a></td>
                                     </tr>
                                     <% } %>
                                 </tbody>
@@ -124,10 +119,39 @@
                             <a href="/commercial/proforma/liste-produit.do?id=<%=detail.getId() %>" class="btn"><i class="bi-plus fs-4"></i></a>
                         </div>
                         <% } %>
+                        <div class="p-5 bg-white rounded-container shadow-sm">
+                            <h4 style="font-weight: bold" class="mb-4">Evolution des prix</h4>
+                            <canvas id="myChart"></canvas>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+
+        const ctx = document.getElementById('myChart');
+    
+        // Date des proforma ASC
+        const labels = [<%=graph.getLabels() %>];
+        const data = {
+            labels: labels,
+            datasets: [<%=graph.getDatasets() %>]
+        };
+
+        new Chart(ctx, {
+            type: 'line',
+            data: data,
+            options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+            }
+        });
+
+    </script>
 </body>
 </html>
