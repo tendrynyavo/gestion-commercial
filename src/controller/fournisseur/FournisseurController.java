@@ -1,5 +1,6 @@
 package controller.fournisseur;
 
+import etu2070.annotation.auth;
 import etu2070.annotation.url;
 import etu2070.framework.ModelView;
 import model.departement.Fournisseur;
@@ -10,6 +11,7 @@ public class FournisseurController extends Fournisseur {
         super();
     }
 
+    @auth
     @url("fournisseur/liste.do")
     public ModelView list() throws Exception {
         return new ModelView("fournisseur/liste-fournisseur")

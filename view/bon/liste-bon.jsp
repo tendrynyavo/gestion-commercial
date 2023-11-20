@@ -103,8 +103,8 @@
                                         </ul>
                                     </div>
                                 </div>
-                                <a href="" class="btn">Mode de paiement</a>
                             </div>
+                            <a href="/commercial/bon/choix.do?id=<%=detail.getId() %>" class="btn mt-4">Mode de paiement</a>
                             <table class="table mt-5">
                                 <thead>
                                     <tr>

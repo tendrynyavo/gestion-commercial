@@ -13,6 +13,7 @@ public class BonController extends Bon{
 		super();
 	}
 
+	@auth
 	@url("bon/update.do")
 	public ModelView updateBon( String mode, String date, String avance, String idBon ) throws Exception{
 		Bon bon = new Bon();
@@ -20,6 +21,7 @@ public class BonController extends Bon{
 		return new ModelView().sendRedirect("/commercial/besoin/demande.do");
 	}
 
+	@auth
 	@url("bon/pass-first-validation.do")
 	public ModelView validateFirst( String idBon ) throws Exception{
 		Bon bon = new Bon();
@@ -27,6 +29,7 @@ public class BonController extends Bon{
 		return new ModelView().sendRedirect("/commercial/besoin/demande.do");
 	}
 
+	@auth
 	@url("bon/pass-second-validation.do")
 	public ModelView validateSecond( String idBon ) throws Exception{
 		Bon bon = new Bon();
@@ -34,6 +37,7 @@ public class BonController extends Bon{
 		return new ModelView().sendRedirect("/commercial/besoin/demande.do");
 	}
 
+	@auth
 	@url("bon/pass-third-validation.do")
 	public ModelView validateThrist( String idBon ) throws Exception{
 		Bon bon = new Bon();
@@ -41,6 +45,7 @@ public class BonController extends Bon{
 		return new ModelView().sendRedirect("/commercial/besoin/demande.do");
 	}
 
+	@auth
 	@url("bon/detail.do")
 	public ModelView liste() throws Exception {
 		try (Connection connection = this.getConnection()) {
@@ -50,6 +55,7 @@ public class BonController extends Bon{
 		}
 	}
 
+	@auth
 	@url("bon/choix.do")
 	public ModelView choix() throws Exception {
 		return new ModelView("bon/choix")

@@ -15,7 +15,16 @@ public class Employe extends BddObject {
     @ColumnName("date_naissance")
     Date dateNaissance;
     String email;
+    Fonction fonction;
     Departement departement;
+
+    public Fonction getFonction() {
+        return fonction;
+    }
+
+    public void setFonction(Fonction fonction) {
+        this.fonction = fonction;
+    }
 
     public Departement getDepartement() {
         return departement;
@@ -93,6 +102,20 @@ public class Employe extends BddObject {
         this.setPrefix("EMP");
         this.setConnection("PostgreSQL");
         this.setPrimaryKeyName("id_employe");
+    }
+
+    public static Employe login(String nom, String password) throws Exception {
+        Employe employe = new Employe();
+        employe.setNom(nom);
+        employe.setPassword(password);
+        Employe[] employes = (Employe[]) employe.findAll(null);
+        if (employes.length == 0) throw new Exception("Nom ou mot de passe incorecte");
+        return employes[0];
+    }
+
+    public static void main(String[] args) throws Exception {
+        Employe employe = Employe.login("John", "password");
+        System.out.println(employe);
     }
     
 }
