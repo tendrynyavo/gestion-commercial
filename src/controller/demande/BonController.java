@@ -14,21 +14,24 @@ public class BonController{
 		return new ModelView().sendRedirect("/commercial/besoin/demande.do");
 	}
 
-	public ModelView validateFirst( String mode, String date, String avance, String idBon ) throws Exception{
+	@url("bon/pass-first-validation.do")
+	public ModelView validateFirst( String idBon ) throws Exception{
 		Bon bon = new Bon();
-		bon.modify( mode, date, avance, idBon );
+		bon.passFirstValidation( idBon );
 		return new ModelView().sendRedirect("/commercial/besoin/demande.do");
 	}
 
+	@url("bon/pass-second-validation.do")
 	public ModelView validateSecond( String idBon ) throws Exception{
 		Bon bon = new Bon();
-		bon.modify( mode, date, avance, idBon );
+		bon.passSecondValidation( idBon );
 		return new ModelView().sendRedirect("/commercial/besoin/demande.do");
 	}
 
-	public ModelView validateFirst( String mode, String date, String avance, String idBon ) throws Exception{
+	@url("bon/pass-third-validation.do")
+	public ModelView validateThrist( String idBon ) throws Exception{
 		Bon bon = new Bon();
-		bon.modify( mode, date, avance, idBon );
+		bon.passThirdValidation(idBon );
 		return new ModelView().sendRedirect("/commercial/besoin/demande.do");
 	}
 

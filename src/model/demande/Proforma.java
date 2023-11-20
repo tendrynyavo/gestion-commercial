@@ -69,7 +69,6 @@ public class Proforma extends BddObject {
 			Produit p = pFs[i].getProduit( produit );
 			if( p != null ){
 				Produit p2 = best.getProduit(produit);
-				System.out.println("jajajajajajaj");
 				if( p2.getPrix() >= p.getPrix() ){
 					best = pFs[i];
 					produit.setPrix(p2.getPrix());
