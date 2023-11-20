@@ -223,7 +223,7 @@ public class Bon extends BddObject{
 		Bon bon = new Bon();
 		bon.setId(idBon);
 		bon = (Bon) bon.getById(connection);
-		bon.setStatus(Integer.parseInt("10"));
+		bon.setStatus(Integer.parseInt(status));
 		bon.update(connection);
 		return bon;
 	}
@@ -257,7 +257,8 @@ public class Bon extends BddObject{
 
 	public void setDetails( Connection connection) throws Exception{
 		Produit produit = new Produit();
-		produit.setTable(String.format("v_detail_commande where id_commande = '%'", this.getId()));
+		produit.setTable(String.format("v_detail_commande where id_commande = '%s
+			'", this.getId()));
 		Produit[] produits = (Produit[]) produit.findAll(connection, null);
 		this.setProduits(produits);
 	}
