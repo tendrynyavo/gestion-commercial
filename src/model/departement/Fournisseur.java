@@ -112,7 +112,7 @@ public class Fournisseur extends BddObject {
 				connect = true;
 			}
 			fournisseur = (Fournisseur) new Fournisseur(id).getById(connection);
-			Proforma[] proformas = (Proforma[]) new Proforma().setFournisseur(fournisseur).findAll(connection, "date_proforma ASC");
+			Proforma[] proformas = (Proforma[]) new Proforma().setFournisseur(fournisseur).findAll(connection, "date_proforma DESC");
 			for (Proforma proforma : proformas) {
 				Produit produit = new Produit();
 				produit.setProforma(proforma);

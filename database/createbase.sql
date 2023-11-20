@@ -164,3 +164,8 @@ CREATE or replace view v_detail_commande
    join v_demande as v_d
       on  d_c.id_demande = v_d.id_demande;
 
+CREATE OR REPLACE VIEW v_bon_commande_fournisseur AS
+SELECT b.*, f.nom, f.email
+FROM bon_de_commande b
+   JOIN Fournisseur f ON b.id_fournisseur=f.id_fournisseur;
+
