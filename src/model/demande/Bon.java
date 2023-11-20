@@ -156,8 +156,6 @@ public class Bon extends BddObject{
 		// Boucleko ilay produits rehetra de inserena ilay izy
 	}
 
-	public void valida
-
 	void init() throws Exception{
 		this.setTable("bon_de_commande");
 		this.setPrefix("BON");
@@ -180,5 +178,7 @@ public class Bon extends BddObject{
 	}
 
 	// Inona daholo ny atao ato zao
+
+	public void
 	
 }
