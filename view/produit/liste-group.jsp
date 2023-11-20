@@ -108,7 +108,7 @@
                                 <% } %>
                               </tbody>
                             </table>
-                            <a class="btn" href="">Generer un bon de commande</a>
+                            <a class="btn" href="/commercial/produit/bon.do">Generer un bon de commande</a>
                           </div>
                     </div>
                 </div>

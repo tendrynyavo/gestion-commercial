@@ -24,12 +24,29 @@ public class Produit extends BddObject {
     Double prix;
     Double tva;
 
+    @ColumnName("id_commande")
+    String commande;
+
+    public void setCommande(String commande){
+        this.commande = commande;
+    }
+    public String getCommande(){
+        return this.commande;
+    }
     public Proforma getProforma() {
         return proforma;
     }
 
     public void setProforma(Proforma proforma) {
         this.proforma = proforma;
+
+    }
+
+    public double getTvaPrice(){
+        return (this.getTva() * this.getPrix()) / 100.0 ;
+    }
+    public double getPrixTTC(){
+        return this.getTvaPrice() + this.getPrix();
     }
 
     public void setPrix(Double prix){
@@ -55,6 +72,7 @@ public class Produit extends BddObject {
     public Double getTva(){
         return this.tva;
     }
+
 
     public String getDemande() {
         return demande;
@@ -191,6 +209,11 @@ public class Produit extends BddObject {
         Produit produit = new Produit();
         produit.setTable("v_liste_groupe");
         return (Produit[]) produit.findAll(connection, null);
+    }
+
+    // @Override
+    public boolean equals( Produit p ) throws Exception{
+        return String.valueOf(p.getId()).equals( String.valueOf(this.getId()));
     }
 
 }
