@@ -343,4 +343,11 @@ public class Bon extends Validation {
     	return converter.asWords( this.getMontant() ).split("\\u20AC")[0];
     }
 
+    // Inona ny eto
+
+    public long livraisonToDays(){
+    	if( this.getLivraison() == null ) return 0;
+    	return java.time.Duration.between(java.time.LocalDate.now(), this.getLivraison().toLocalDate()).toDays();
+    }
+
 }

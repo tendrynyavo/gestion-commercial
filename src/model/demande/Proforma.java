@@ -65,11 +65,15 @@ public class Proforma extends BddObject {
 
 	public static Proforma moinDisant( Proforma[] pFs, Produit produit ) throws Exception{
 		Proforma best = pFs[0];
+			System.out.println(produit.getNom());
 		for( int i = 0 ; i < pFs.length ; i++ ){
 			Produit p = pFs[i].getProduit( produit );
-			if( p != null ){
-				Produit p2 = best.getProduit(produit);
-				if( p2.getPrix() >= p.getPrix() ){
+			Produit p2 = best.getProduit(produit);
+			System.out.println("produit === " + produit.getNom() );
+			System.out.println("Proforma acitfs === " + pFs[i].getId() );
+			System.out.println("Proforma nows === " + best.getId() );
+			if( p != null){
+				if( p2 == null || p2.getPrix() >= p.getPrix() ){
 					best = pFs[i];
 					produit.setPrix(p.getPrix());
 					produit.setTva(p.getTva());

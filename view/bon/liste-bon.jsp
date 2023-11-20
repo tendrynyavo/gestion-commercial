@@ -99,7 +99,7 @@
                                             <li>Status : <%=detail.getStringStatus() %></li>
                                             <li>Mode paiement : <%=detail.getPaiement() %></li>
                                             <li>Date de livraison : <%=detail.getLivraison() %></li>
-                                            <li>Avance : <%=detail.getAvance() %></li>
+                                            <li>Avance : <%=detail.getAvance() %> et le reste dans <%= detail.livraisonToDays() %> jours </li>
                                         </ul>
                                     </div>
                                 </div>
