@@ -58,7 +58,7 @@ public class BonController extends Bon{
 	@auth
 	@url("bon/choix.do")
 	public ModelView choix() throws Exception {
-		return new ModelView("bon/choix")
+		return new ModelView("bon/choix-bon")
 			.addItem("bon", this.getById());
 	}
 
