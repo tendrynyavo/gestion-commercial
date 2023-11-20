@@ -104,6 +104,7 @@
                                         <th scope="col">Quantite</th>
                                         <th scope="col">Prix Unitaire</th>
                                         <th scope="col">TVA</th>
+                                        <th scope="col">Prix TTC</th>
                                         <th scope="col"></th>
                                     </tr>
                                 </thead>
@@ -115,7 +116,8 @@
                                         <td class="align-middle"><%=produit.getUnite() %></td>
                                         <td class="align-middle"><%=produit.getQuantite() %></td>
                                         <td class="align-middle"><%=produit.getPrix() %></td>
-                                        <td class="align-middle"><%=produit.getTva() %></td>
+                                        <td class="align-middle"><%=produit.getTvaPrice() %></td>
+                                        <td class="align-middle"><%=produit.getPrixTTC() %></td>
                                         <td class="align-middle"><a class="link-dark" href="/commercial/produit/post-valider.do?id=<%=produit.getDemande() %>&besoin=<%=detail.getId() %>"><i class="bi-check fs-3"></i></a></td>
                                     </tr>
                                     <% } %>

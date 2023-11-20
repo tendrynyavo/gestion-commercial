@@ -24,6 +24,16 @@ public class Bon extends BddObject{
 	ArrayList<Produit> ps;
 	Produit[] produits;
 
+	public void setMode( String paiement ){
+		this.setPaiement(paiement);
+	}
+	public void setLivraison(String a){
+		this.setLivraison(Date.valueOf(a));
+	}
+	public void setAvance(String avance){
+		this.setAvance(Double.parseDouble(avance));
+	}
+
 	public Bon() throws Exception{
 		init();
 	}
@@ -165,6 +175,24 @@ public class Bon extends BddObject{
 		this.setCountPK(7);
 	}
 
-	// Inona daholo ny atao ato zao
-	
+	public void validateBon(String mode, String date, String avance, String id) throws Exception{
+		Connection connection = this.getConnection();
+		try{
+			Bon bon = new Bon();
+			bon.setId(id);
+			bon = bon.getById(connection);
+			// Okey azo ny bon de settena ny mode
+			bon.setMode(mode);
+			bon.setLivraison(date);
+			bon.setAvance(avance);
+			bon.update(connection);
+			connection.commit();
+		}catch(Exception e){
+			connection.rollback();
+			throw e;
+		}finally{
+			connection.close();
+		}
+	}
+
 }

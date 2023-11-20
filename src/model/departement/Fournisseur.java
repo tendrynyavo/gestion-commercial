@@ -77,7 +77,7 @@ public class Fournisseur extends BddObject {
 		this.getBon().setFournisseur( this.getId() );
 		this.getBon().finalizeProducts();
 		this.getBon().setCreation( Date.valueOf(java.time.LocalDate.now()) );
-		this.getBon().setStatus(10);
+		this.getBon().setStatus(0);
 		this.getBon().save(connection);
 	}
 

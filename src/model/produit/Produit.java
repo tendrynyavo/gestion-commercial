@@ -42,6 +42,13 @@ public class Produit extends BddObject {
 
     }
 
+    public double getTvaPrice(){
+        return (this.getTva() * this.getPrix()) / 100.0 ;
+    }
+    public double getPrixTTC(){
+        return this.getTvaPrice() + this.getPrix();
+    }
+
     public void setPrix(Double prix){
         this.prix = prix;
     }

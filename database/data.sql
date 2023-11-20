@@ -37,16 +37,16 @@ insert into proforma values ('PRF00' || NEXTVAL('s_proforma') , '2023-10-10' , '
 insert into proforma values ('PRF00' || NEXTVAL('s_proforma') , '2023-10-11' , 'FOUR002');
 insert into proforma values ('PRF00' || NEXTVAL('s_proforma') , '2023-10-12' , 'FOUR003');
 
-insert into detail_proforma values (default, 'ART001', 'PRF001', 30, 2500000, 500000);
-insert into detail_proforma values (default, 'ART002', 'PRF001', 30, 1400000, 280000);
-insert into detail_proforma values (default, 'ART003', 'PRF001', 30, 6000, 1200);
+insert into detail_proforma values (default, 'ART001', 'PRF001', 30, 2500000, 20);
+insert into detail_proforma values (default, 'ART002', 'PRF001', 30, 1400000, 20);
+insert into detail_proforma values (default, 'ART003', 'PRF001', 30, 6000, 20);
 
-insert into detail_proforma values (default, 'ART001', 'PRF002', 30, 2000000, 400000);
-insert into detail_proforma values (default, 'ART004', 'PRF002', 30, 90000, 18000);
-insert into detail_proforma values (default, 'ART005', 'PRF002', 30, 80000, 160000);
+insert into detail_proforma values (default, 'ART001', 'PRF002', 30, 2000000, 20);
+insert into detail_proforma values (default, 'ART004', 'PRF002', 30, 90000, 20);
+insert into detail_proforma values (default, 'ART005', 'PRF002', 30, 80000, 20);
 
-insert into detail_proforma values (default, 'ART001', 'PRF003', 30, 3800000, 760000);
-insert into detail_proforma values (default, 'ART002', 'PRF003', 30, 1500000, 300000);
-insert into detail_proforma values (default, 'ART003', 'PRF003', 30, 3000, 600);
-insert into detail_proforma values (default, 'ART005', 'PRF003', 30, 75000, 15000);
+insert into detail_proforma values (default, 'ART001', 'PRF003', 30, 3800000, 20);
+insert into detail_proforma values (default, 'ART002', 'PRF003', 30, 1500000, 20);
+insert into detail_proforma values (default, 'ART003', 'PRF003', 30, 3000, 20);
+insert into detail_proforma values (default, 'ART005', 'PRF003', 30, 75000, 20);
 
