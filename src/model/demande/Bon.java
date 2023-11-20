@@ -24,15 +24,15 @@ public class Bon extends BddObject{
 	ArrayList<Produit> ps;
 	Produit[] produits;
 
-	public void setMode( String paiement ){
-		this.setPaiement(paiement);
-	}
-	public void setLivraison(String a){
-		this.setLivraison(Date.valueOf(a));
-	}
-	public void setAvance(String avance){
-		this.setAvance(Double.parseDouble(avance));
-	}
+	// public void setMode( String paiement ){
+	// 	this.setPaiement(paiement);
+	// }
+	// public void setLivraison(String a){
+	// 	this.setLivraison(Date.valueOf(a));
+	// }
+	// public void setAvance(String avance){
+	// 	this.setAvance(Double.parseDouble(avance));
+	// }
 
 	public Bon() throws Exception{
 		init();
@@ -219,11 +219,11 @@ public class Bon extends BddObject{
 	/// mandeha aloha ny premiere validation
 	// Rehefa premiere validation de lasa status 10
 
-	Bon updateStatus(Connection connection, String status) throws Exception{
+	Bon updateStatus(Connection connection, String status, String idBon) throws Exception{
 		Bon bon = new Bon();
 		bon.setId(idBon);
 		bon = (Bon) bon.getById(connection);
-		bon.setStatus("10");
+		bon.setStatus(Integer.parseInt("10"));
 		bon.update(connection);
 		return bon;
 	}
@@ -232,7 +232,7 @@ public class Bon extends BddObject{
 		
 		Connection connection = this.getConnection();
 		try{
-			this.updateStatus(connection, "10");
+			this.updateStatus(connection, "10", idBon);
 			connection.commit();
 		}catch(Exception e){
 			connection.rollback();
@@ -245,7 +245,7 @@ public class Bon extends BddObject{
 	public void passSecondValidation(String idBon) throws Exception{
 		Connection connection = this.getConnection();
 		try{
-			this.updateStatus(connection, "20");
+			this.updateStatus(connection, "20", idBon);
 			connection.commit();
 		}catch(Exception e){
 			connection.rollback();
@@ -267,13 +267,13 @@ public class Bon extends BddObject{
 	public void passThirdValidation(String idBon) throws Exception{
 		Connection connection = this.getConnection();
 		try{
-			Bon bon = this.updateStatus(connection, "25");
+			Bon bon = this.updateStatus(connection, "25", idBon);
 			bon.setDetails(connection);
 			for( Produit p : bon.getProduits() ){
-				p.setStatus("20");
+				p.setStatus(20);
 				p.setTable("demande");
-				p.setPrix(null);
-				p.setTva(null);
+				p.setPrix((Double)null);
+				p.setTva((Double)null);
 				p.setId(null);
 				p.setNom(null);
 				p.setReference(null);
