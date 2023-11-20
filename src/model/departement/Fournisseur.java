@@ -6,6 +6,9 @@ import java.sql.*;
 import connection.*;
 
 import connection.annotation.ColumnName;
+import etu2070.annotation.restAPI;
+import model.demande.Proforma;
+import model.produit.Produit;
 
 public class Fournisseur extends BddObject {
 	
@@ -109,13 +112,26 @@ public class Fournisseur extends BddObject {
 				connect = true;
 			}
 			fournisseur = (Fournisseur) new Fournisseur(id).getById(connection);
-			fournisseur.setProformas((Proforma[]) new Proforma().setFournisseur(fournisseur).findAll(connection, "date_proforma ASC"));
+			Proforma[] proformas = (Proforma[]) new Proforma().setFournisseur(fournisseur).findAll(connection, "date_proforma ASC");
+			for (Proforma proforma : proformas) {
+				Produit produit = new Produit();
+				produit.setProforma(proforma);
+				produit.setTable("v_proforma");
+				proforma.setProduits((Produit[]) produit.findAll(connection, "nom"));
+			}
+			fournisseur.setProformas(proformas);
 		} finally {
 			if (connect) {
 				connection.close();
 			}
 		}
 		return fournisseur;
+	}
+
+	public Graph createGraph() {
+		Graph graph = new Graph();
+		graph.setProformas(this.getProformas());
+		return graph;
 	}
 
 }

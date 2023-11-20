@@ -24,14 +24,9 @@
             <div class="col-sm-auto sticky-top m-3 rounded-sidebar shadow-sm" style="background-color: #353e37;">
                 <div class="d-flex flex-sm-column rounded-sidebar flex-row flex-nowrap align-items-center sticky-top" style="background-color: #353e37;">
                     <ul class="p-3 nav nav-flush flex-sm-column flex-row flex-nowrap mb-auto mx-auto text-center align-items-center">
-                        <li class="mt-4">
-                            <a href="/commercial/besoin/demande.do" class="link-dark nav-link rounded-circle active-item">
-                                <i style="color: white;" class="bi-bag-plus fs-4"></i>
-                            </a>
-                        </li>
                         <li class="nav-item mt-3">
                             <a href="/commercial/besoin/detail.do" class="link-dark nav-link rounded-circle item">
-                                <i style="color: white;" class="bi-list-nested fs-4"></i>
+                                <i style="color: white;" class="bi-box-seam fs-4"></i>
                             </a>
                         </li>
                         <li class="nav-item mt-3">
