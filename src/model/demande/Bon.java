@@ -156,6 +156,8 @@ public class Bon extends BddObject{
 		// Boucleko ilay produits rehetra de inserena ilay izy
 	}
 
+	public void valida
+
 	void init() throws Exception{
 		this.setTable("bon_de_commande");
 		this.setPrefix("BON");
@@ -163,6 +165,18 @@ public class Bon extends BddObject{
 		this.setPrimaryKeyName("id_commande");
 		this.setFunctionPK("nextval('s_bon')");
 		this.setCountPK(7);
+	}
+
+	public double getMontant() throws Exception{
+		double montant = 0;
+		for( Produit p : this.getProduits() ) montant = montant + p.getPrixTTC();
+		return montant;
+	}
+
+	public double getTVATotal() throws Exception{
+		double tva = 0;
+		for( Produit p : this.getProduits() ) tva = tva + p.getPrix();
+		return (20 * tva) / 100.0;
 	}
 
 	// Inona daholo ny atao ato zao

@@ -1,6 +1,7 @@
 drop database if exists commercial;
 create database commercial;
 \c commercial;
+
 CREATE SEQUENCE s_produit start WITH 1 INCREMENT BY 1;
 
 CREATE TABLE Produit(
