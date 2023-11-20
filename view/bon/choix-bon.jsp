@@ -43,20 +43,19 @@
             <div class="col-sm p-3 min-vh-100">
                 <div class="bg-white p-5 rounded-container w-50">
                     <h4 style="font-weight: bold" class="mb-4">Validation du bon de commande</h4>
-                    <form action="./liste-demande.html" method="POST">
+                    <form action="/commercial/bon/update.do" method="POST">
                         <div class="mb-4 row">
                             <label for="description" class="col-sm-2 col-form-label">Date de livraison</label>
                             <div class="col-sm-10">
-                                <input type="date" name="livraison" id="description" class="form-control" style="border-radius: 15px;">
+                                <input type="date" name="date" id="description" class="form-control" style="border-radius: 15px;">
                             </div>
                         </div>
                         <div class="mb-4 row">
                             <label for="description" class="col-sm-2 col-form-label">Mode de paiement</label>
                             <div class="col-sm-10">
                                 <select class="form-select" style="border-radius: 15px;" name="mode">
-                                    <option value="1">One</option>
-                                    <option value="2">Two</option>
-                                    <option value="3">Three</option>
+                                    <option value="Cheque">Cheque</option>
+                                    <option value="Virement">Virement</option>
                                 </select>
                             </div>
                         </div>
@@ -66,7 +65,7 @@
                                 <input type="text" name="avance" id="description" class="form-control" style="border-radius: 15px;">
                             </div>
                         </div>
-                        <input type="hidden" name="id" value="<%=bon.getId() %>">
+                        <input type="hidden" name="idBon" value="<%=detail.getId() %>">
                         <div class="row">
                             <button class="btn">Valider</button>
                         </div>
