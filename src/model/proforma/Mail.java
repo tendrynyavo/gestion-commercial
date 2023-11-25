@@ -17,6 +17,7 @@ import jxl.write.Label;
 import jxl.write.Formula;
 import jxl.write.WritableWorkbook;
 import jxl.write.WriteException;
+
 public class Mail {
 
    public static void envoieMail(String sender,String mdp,String recipient,String filename) throws  Exception{
