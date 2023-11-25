@@ -9,6 +9,7 @@ CREATE TABLE Produit(
    nom VARCHAR(100)  NOT NULL,
    reference VARCHAR(50)  NOT NULL,
    unite VARCHAR(50)  NOT NULL,
+   tva double precision,
    PRIMARY KEY(id_produit)
 );
 
@@ -96,6 +97,7 @@ CREATE TABLE Fournisseur(
    id_fournisseur VARCHAR(50) ,
    nom VARCHAR(100)  NOT NULL,
    email VARCHAR(100)  NOT NULL,
+   mot_de_passe varchar(100),
    PRIMARY KEY(id_fournisseur)
 );
 
@@ -123,14 +125,27 @@ CREATE TABLE detail_commande(
    FOREIGN KEY(id_demande) REFERENCES Demande(id)
 );
 
+
+CREATE SEQUENCE s_Client start WITH 1 INCREMENT BY 1;
+
+CREATE TABLE Client(
+   id_client VARCHAR(50) ,
+   nom VARCHAR(100)  NOT NULL,
+   email VARCHAR(100)  NOT NULL,
+   mot_de_passe varchar(100),
+   PRIMARY KEY(id_client)
+);
+
 CREATE SEQUENCE s_proforma start WITH 1 INCREMENT BY 1;
 
 CREATE TABLE Proforma(
    id_proforma VARCHAR(50) ,
    date_proforma DATE,
    id_fournisseur VARCHAR(50)  NOT NULL,
+   id_client varchar(50) not null,
    PRIMARY KEY(id_proforma),
-   FOREIGN KEY(id_fournisseur) REFERENCES Fournisseur(id_fournisseur)
+   FOREIGN KEY(id_fournisseur) REFERENCES Fournisseur(id_fournisseur),
+   FOREIGN KEY(client) REFERENCES Client(id_client)
 );
 
 CREATE TABLE detail_proforma(
@@ -203,3 +218,43 @@ CREATE OR REPLACE VIEW v_detail_commande_groupe AS
 SELECT id_commande, id_produit, unite, prix_unitaire, tva, nom, reference, SUM(quantite) AS quantite
 FROM v_detail_commande
    GROUP BY id_commande, id_produit, unite, prix_unitaire, tva, nom, reference;
+---------------------------------------------------------------------------------------------------------------------------------
+
+CREATE SEQUENCE s_mouvement start WITH 1 INCREMENT BY 1;
+
+create table mouvement(
+   id_mouvement varchar(50) primary key,
+   date_mouvement date,
+   id_produit VARCHAR(50) ,
+   pu double precision,
+   quantite double precision,
+   type_mouvement int,
+   foreign key(id_produit) references Produit(id_produit)
+);
+
+create table demande_proforma(
+   id_demande_proforma serial primary key,
+   id_client varchar(50),
+   id_fournisseur varchar(50),
+   date_demande date,
+   foreign key(id_client) references Client(id_client),
+   foreign key(id_fournisseur) references Fournisseur(id_fournisseur)
+);
+
+create table detail_demande_proforma(
+   id_detail_demande serial primary key,
+   id_demande_proforma int,
+   id_produit varchar(50),
+   quantite double precision,
+   foreign key(id_produit) references Produit(id_produit)
+);
+
+create view entree as 
+select * 
+from mouvement 
+where type_mouvement=0;
+
+create view sortie as 
+select * 
+from mouvement 
+where type_mouvement=1;
