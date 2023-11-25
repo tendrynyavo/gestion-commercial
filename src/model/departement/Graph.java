@@ -34,6 +34,7 @@ public class Graph {
     }
 
     public String getDatasets() throws Exception {
+        if (this.getProformas().length == 0) return "";
         Produit[] produits = (Produit[]) new Produit().findAll("nom");
         StringBuilder json = new StringBuilder();
         for (Produit produit : produits) {

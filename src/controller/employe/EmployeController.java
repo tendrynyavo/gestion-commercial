@@ -24,5 +24,12 @@ public class EmployeController extends Employe {
         view.addSession("profil", employe.getFonction().getNom());
         return view.sendRedirect("/commercial/");
     }
+
+    @url("log-out.do")
+    public ModelView logOut() {
+        ModelView view = new ModelView();
+        view.setInvalidate(true);
+        return view.sendRedirect("/commercial/login/login.do");
+    }
     
 }

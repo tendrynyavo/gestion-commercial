@@ -35,8 +35,8 @@ public class ProduitController extends Produit {
 
     @auth("Chef de departement")
     @url("produit/valider.do")
-    public ModelView validerProduit(String besoin) throws Exception {
-        this.valider();
+    public ModelView validerProduit(String departement) throws Exception {
+        this.valider(departement);
         return new ModelView().sendRedirect("/commercial/produit/liste-group.do");
     }
 

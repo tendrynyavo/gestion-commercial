@@ -69,7 +69,7 @@ public class Fournisseur extends BddObject {
 	public int getFournisseur(Fournisseur[] fs , Fournisseur f){
 		int i = 0;
 		for( Fournisseur fo : fs ){
-			if( fo.getId() == f.getId() ) return i;
+			if( fo.getId().equals(f.getId()) ) return i;
 			i++;
 		}
 		return -1;

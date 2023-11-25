@@ -147,7 +147,7 @@ public class Bon extends Validation {
 				Proforma proforma = Proforma.moinDisant( proformas, produit );
 				Fournisseur f = proforma.getFournisseur();
 				int index = f.getFournisseur(fournisseurs, f);
-				if(index >= 0) {
+				if( produit.getPrix() != null && index >= 0) {
 					fournisseurs[index].addToBon( produit );
 				}
 			}
@@ -179,9 +179,10 @@ public class Bon extends Validation {
 			p.setReference(null);
 			p.setUnite(null);
 			p.setStatus(null);
-			p.setQuantite((Double)null);
+			p.setQuantite((Double) null);
 			p.setBesoin(null);
 			p.setId(null);
+			p.setDepartement(null);
 			p.setTable("detail_commande");
 			p.setSerial(false);
 			p.setCommande(id);
@@ -326,9 +327,9 @@ public class Bon extends Validation {
             }
             bon = (Bon) ((BddObject) new Bon().setTable("v_bon_commande_fournisseur")).setId(id).getById(connection);
 			Produit produit = new Produit();
-            produit.setCommande(bon.getId());
-            produit.setTable("v_detail_commande");
             if (bon != null) {
+				produit.setCommande(bon.getId());
+				produit.setTable("v_detail_commande_groupe");
 				bon.setProduits((Produit[]) produit.findAll(connection, "nom"));
             }
         } finally {

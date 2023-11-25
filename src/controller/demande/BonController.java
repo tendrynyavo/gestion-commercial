@@ -18,7 +18,7 @@ public class BonController extends Bon{
 	public ModelView updateBon( String mode, String date, String avance, String idBon ) throws Exception{
 		Bon bon = new Bon();
 		bon.modify( mode, date, avance, idBon );
-		return new ModelView().sendRedirect("/commercial/besoin/demande.do");
+		return new ModelView().sendRedirect("/commercial/bon/detail.do?id="+idBon);
 	}
 
 	@auth
@@ -42,7 +42,7 @@ public class BonController extends Bon{
 	public ModelView validateThrist( String idBon ) throws Exception{
 		Bon bon = new Bon();
 		bon.passThirdValidation(idBon );
-		return new ModelView().sendRedirect("/commercial/besoin/demande.do");
+		return new ModelView().sendRedirect("/commercial/bon/detail.do?id=" + idBon);
 	}
 
 	@auth

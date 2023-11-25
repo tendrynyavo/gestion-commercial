@@ -44,7 +44,7 @@
                             </a>
                         </li>
                         <li class="nav-item mt-3">
-                            <a href="#" class="link-dark nav-link rounded-circle item">
+                            <a href="/commercial/log-out.do" class="link-dark nav-link rounded-circle item">
                                 <i style="color: white;" class="bi-box-arrow-left fs-4"></i>
                             </a>
                         </li>
@@ -69,6 +69,7 @@
                                     <th scope="col">Article</th>
                                     <th scope="col">Unite</th>
                                     <th scope="col">Quantite</th>
+                                    <th scope="col">Departement</th>
                                     <th scope="col">Status</th>
                                     <th scope="col"></th>
                                     <th scope="col"></th>
@@ -81,8 +82,9 @@
                                     <td class="align-middle"><%=produit.getNom() %></td>
                                     <td class="align-middle"><%=produit.getUnite() %></td>
                                     <td class="align-middle"><%=produit.getQuantite() %></td>
+                                    <td class="align-middle"><%=produit.getDepartement().getNom() %></td>
                                     <td class="align-middle"><%=produit.getStringStatus() %></td>
-                                    <td class="align-middle"><a class="link-dark" href="/commercial/produit/valider.do?id=<%=produit.getId() %>"><i class="bi-check fs-3"></i></a></td>
+                                    <td class="align-middle"><a class="link-dark" href="/commercial/produit/valider.do?id=<%=produit.getId() %>&departement=<%=produit.getDepartement().getId() %>"><i class="bi-check fs-3"></i></a></td>
                                   </tr>
                                   <% } %>
                                 </tbody>
@@ -143,6 +145,6 @@
           }
         }
       });
-    </script>      
+    </script>
 </body>
 </html>

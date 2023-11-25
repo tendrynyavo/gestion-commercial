@@ -44,7 +44,7 @@
                             </a>
                         </li>
                         <li class="nav-item mt-3">
-                            <a href="#" class="link-dark nav-link rounded-circle item">
+                            <a href="/commercial/log-out.do" class="link-dark nav-link rounded-circle item">
                                 <i style="color: white;" class="bi-box-arrow-left fs-4"></i>
                             </a>
                         </li>

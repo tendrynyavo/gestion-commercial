@@ -39,11 +39,7 @@ CREATE TABLE Employe(
    password VARCHAR(100)  NOT NULL,
    date_naissance DATE,
    email VARCHAR(100)  NOT NULL,
-   id_fonction VARCHAR(50)  NOT NULL,
-   id_departement VARCHAR(50) ,
-   PRIMARY KEY(id_employe),
-   FOREIGN KEY(id_fonction) REFERENCES Fonction(id_fonction),
-   FOREIGN KEY(id_departement) REFERENCES Departement(id_departement)
+   PRIMARY KEY(id_employe)
 );
 
 
@@ -69,14 +65,22 @@ CREATE TABLE demande(
 );
 
 CREATE OR REPLACE VIEW v_demande AS
-SELECT d.id_produit, p.nom, p.reference, p.unite, d.quantite, d.id_besoin, d.status, d.id as id_demande
+SELECT d.id_produit, p.nom, p.reference, p.unite, d.quantite, d.id_besoin, d.status, d.id as id_demande, e.id_departement
 FROM demande d
+   JOIN besoin b ON d.id_besoin=b.id_besoin
+   JOIN employe e ON b.id_employe=e.id_employe
    JOIN produit p ON d.id_produit=p.id_produit;
+
+CREATE OR REPLACE VIEW v_liste_groupe_departement AS
+SELECT id_produit, nom, unite, reference, SUM(quantite) as quantite, status, id_departement
+FROM v_demande
+WHERE status >= 10
+GROUP BY id_produit, nom, unite, reference, id_departement, status;
 
 CREATE OR REPLACE VIEW v_liste_groupe AS
 SELECT id_produit, nom, unite, reference, SUM(quantite) as quantite, status
 FROM v_demande
-WHERE status >= 10
+WHERE status = 10
 GROUP BY id_produit, nom, unite, reference, status;
 
 -- Okey tokony mba misy vu mi-gerer ihany izany ilay izy raha izany hoe avy aiza ilay izy
@@ -99,7 +103,7 @@ CREATE SEQUENCE s_bon start WITH 1 INCREMENT BY 1;
 
 CREATE TABLE bon_de_commande(
    id_commande VARCHAR(50) ,
-   date_commande DATE,
+   date_commande TIMESTAMP,
    status INTEGER NOT NULL,
    mode_paiment VARCHAR(50) ,
    date_livraison DATE,
@@ -169,3 +173,33 @@ SELECT b.*, f.nom, f.email
 FROM bon_de_commande b
    JOIN Fournisseur f ON b.id_fournisseur=f.id_fournisseur;
 
+
+-- The answer of Mark Byers is the optimal in this situation. Though in more complex situations you can take the select query that returns rowids and calculated values and attach it to the update query like this:
+
+UPDATE demande
+SET status = 15
+WHERE id IN (
+   SELECT id
+   FROM v_demande_departement v
+   WHERE
+      v.id_produit = 'ART009'
+      AND v.id_departement = 'DEPT008'
+      AND v.status = 10
+);
+
+CREATE OR REPLACE VIEW v_demande_departement AS
+SELECT d.*, e.id_departement
+FROM demande d
+   JOIN besoin b ON d.id_besoin=b.id_besoin
+   JOIN employe e ON b.id_employe=e.id_employe;
+
+SELECT *
+FROM v_demande_departement v
+WHERE
+    v.id_produit = 'ART009'
+    AND v.id_departement = 'DEPT008';
+
+CREATE OR REPLACE VIEW v_detail_commande_groupe AS
+SELECT id_commande, id_produit, unite, prix_unitaire, tva, nom, reference, SUM(quantite) AS quantite
+FROM v_detail_commande
+   GROUP BY id_commande, id_produit, unite, prix_unitaire, tva, nom, reference;

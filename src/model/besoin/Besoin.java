@@ -70,7 +70,7 @@ public class Besoin extends BddObject {
             produit.setBesoin(besoin);
             produit.setTable("v_demande");
             if (besoin != null) {
-                besoin.setProduits((Produit[]) produit.findAll(connection, "nom"));
+                besoin.setProduits((Produit[]) produit.findAll(connection, "nom, quantite"));
             }
         } finally {
             if (connect) {

@@ -46,7 +46,7 @@
                             </a>
                         </li>
                         <li class="nav-item mt-3">
-                            <a href="#" class="link-dark nav-link rounded-circle item">
+                            <a href="/commercial/log-out.do" class="link-dark nav-link rounded-circle item">
                                 <i style="color: white;" class="bi-box-arrow-left fs-4"></i>
                             </a>
                         </li>
@@ -81,7 +81,7 @@
                     <div class="col-8">
                         <% if (detail != null) { %>
                         <div class="bg-white p-5 rounded-container shadow-sm">
-                            <h4 style="font-weight: bold" class="mb-4">Detail de proforma</h4>
+                            <h4 style="font-weight: bold" class="mb-4">Detail de bon de commande</h4>
                             <div class="d-flex">
                                 <div class="col">
                                     <div class="w-75 p-4 rounded-container-detail shadow-sm">
@@ -172,6 +172,7 @@
                                 </strong>
                             </div>                                        
                             <a href="/commercial/bon/pass-third-validation.do?idBon=<%=detail.getId() %>" class="btn mt-3">Valider</a>
+                            <a href="/commercial/bon/pass-third-validation.do?idBon=<%=detail.getId() %>" class="btn mt-3">Export PDF</a>
                         </div>
                         <% } %>
                     </div>

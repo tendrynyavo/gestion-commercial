@@ -48,7 +48,7 @@
                             </a>
                         </li>
                         <li class="nav-item mt-3">
-                            <a href="#" class="link-dark nav-link rounded-circle item">
+                            <a href="/commercial/log-out.do" class="link-dark nav-link rounded-circle item">
                                 <i style="color: white;" class="bi-box-arrow-left fs-4"></i>
                             </a>
                         </li>
@@ -107,7 +107,6 @@
                                         <th scope="col">Prix Unitaire</th>
                                         <th scope="col">TVA</th>
                                         <th scope="col">Prix TTC</th>
-                                        <th scope="col"></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -121,7 +120,6 @@
                                         <td class="align-middle"><%=produit.getTva() %></td>
                                         <td class="align-middle"><%=produit.getTvaPrice() %></td>
                                         <td class="align-middle"><%=produit.getPrixTTC() %></td>
-                                        <td class="align-middle"><a class="link-dark" href="/commercial/produit/post-valider.do?id=<%=produit.getDemande() %>&besoin=<%=detail.getId() %>"><i class="bi-check fs-3"></i></a></td>
                                     </tr>
                                     <% } %>
                                 </tbody>

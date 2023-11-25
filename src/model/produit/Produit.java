@@ -5,6 +5,7 @@ import connection.Column;
 import connection.annotation.ColumnName;
 import model.besoin.Besoin;
 import model.demande.Proforma;
+import model.departement.Departement;
 import model.validation.Validation;
 
 import java.math.RoundingMode;
@@ -27,6 +28,15 @@ public class Produit extends Validation {
     Double tva;
     @ColumnName("id_commande")
     String commande;
+    Departement departement;
+
+    public Departement getDepartement() {
+        return departement;
+    }
+
+    public void setDepartement(Departement departement) {
+        this.departement = departement;
+    }
 
     public void setCommande(String commande){
         this.commande = commande;
@@ -148,10 +158,20 @@ public class Produit extends Validation {
         this.update(null);
     }
 
-    public void valider() throws Exception {
+    public void valider(String departement) throws Exception {
         try (Connection connection = this.getConnection()) {
             try (Statement statement = connection.createStatement()) {
-                String sql = String.format("UPDATE demande SET status = 15 WHERE id_produit = '%s' AND status = 10", this.getId());
+                String sql = "UPDATE demande\n" +
+                "SET status = 15\n" +
+                "WHERE id IN (\n" +
+                   "SELECT id\n" +
+                   "FROM v_demande_departement v\n" +
+                   "WHERE\n" +
+                      "v.id_produit = '%s'\n" +
+                      "AND v.id_departement = '%s'\n" +
+                      "AND v.status = 10\n" +
+                ");";
+                sql = String.format(sql, this.getId(), departement);
                 statement.executeUpdate(sql);
             }
             connection.commit();
@@ -160,7 +180,7 @@ public class Produit extends Validation {
 
     public static Produit[] getProduitGroup(String status, Connection connection) throws Exception {
         Produit produit = new Produit();
-        produit.setTable(String.format("v_liste_groupe WHERE status = %s", status));
+        produit.setTable(String.format("v_liste_groupe_departement WHERE status = %s", status));
         return (Produit[]) ((connection == null) ? produit.findAll(null) : produit.findAll(connection, null));
     }
 
