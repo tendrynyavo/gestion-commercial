@@ -40,6 +40,8 @@ CREATE TABLE Employe(
    password VARCHAR(100)  NOT NULL,
    date_naissance DATE,
    email VARCHAR(100)  NOT NULL,
+   id_departement varchar(50),
+   foreign key(id_departement) references Departement(id_departement),
    PRIMARY KEY(id_employe)
 );
 
@@ -145,7 +147,7 @@ CREATE TABLE Proforma(
    id_client varchar(50) not null,
    PRIMARY KEY(id_proforma),
    FOREIGN KEY(id_fournisseur) REFERENCES Fournisseur(id_fournisseur),
-   FOREIGN KEY(client) REFERENCES Client(id_client)
+   FOREIGN KEY(id_client) REFERENCES Client(id_client)
 );
 
 CREATE TABLE detail_proforma(
@@ -164,7 +166,7 @@ create or replace view v_detail_proforma_produit
    as
    select 
       pf.id, pf.id_proforma, pf.quantite, pf.prix_unitaire, pf.tva,
-      p.*
+      p.id_produit,p.nom,p.reference,p.unite
    from detail_proforma as pf
    join produit as p 
    on pf.id_produit = p.id_produit;
@@ -191,6 +193,12 @@ FROM bon_de_commande b
 
 -- The answer of Mark Byers is the optimal in this situation. Though in more complex situations you can take the select query that returns rowids and calculated values and attach it to the update query like this:
 
+CREATE OR REPLACE VIEW v_demande_departement AS
+SELECT d.*, e.id_departement
+FROM demande d
+   JOIN besoin b ON d.id_besoin=b.id_besoin
+   JOIN employe e ON b.id_employe=e.id_employe;
+   
 UPDATE demande
 SET status = 15
 WHERE id IN (
@@ -202,11 +210,6 @@ WHERE id IN (
       AND v.status = 10
 );
 
-CREATE OR REPLACE VIEW v_demande_departement AS
-SELECT d.*, e.id_departement
-FROM demande d
-   JOIN besoin b ON d.id_besoin=b.id_besoin
-   JOIN employe e ON b.id_employe=e.id_employe;
 
 SELECT *
 FROM v_demande_departement v
@@ -249,12 +252,12 @@ create table detail_demande_proforma(
    foreign key(id_produit) references Produit(id_produit)
 );
 
-create view entree as 
+CREATE OR REPLACE VIEW entree as 
 select * 
 from mouvement 
 where type_mouvement=0;
 
-create view sortie as 
+CREATE OR REPLACE VIEW sortie as 
 select * 
 from mouvement 
 where type_mouvement=1;

@@ -1,4 +1,4 @@
-package mail;
+package model.proforma;
 
 
 import java.io.File;
