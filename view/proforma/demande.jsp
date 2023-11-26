@@ -41,6 +41,11 @@
                             </a>
                         </li>
                         <li class="nav-item mt-3">
+                            <a href="/commercial/demande/proforma.do" class="link-dark nav-link rounded-circle item">
+                                <i style="color: white;" class="bi-file-earmark-text fs-4"></i>
+                            </a>
+                        </li>
+                        <li class="nav-item mt-3">
                             <a href="/commercial/log-out.do" class="link-dark nav-link rounded-circle item">
                                 <i style="color: white;" class="bi-box-arrow-left fs-4"></i>
                             </a>
@@ -48,11 +53,11 @@
                     </ul>
                 </div>
             </div>
-            <div class="col-sm p-3 min-vh-100">
-                <div class="row p-3">
-                    <div class="col">
-                        <div class="bg-white p-5 rounded-container shadow-sm">
-                            <h4 style="font-weight: bold" class="mb-4">Demande de proforma</h4>
+            <div class="col-md-6 mx-auto p-3 min-vh-100">
+            <div class="row p-3">
+                <div class="col">
+                    <div class="bg-white p-5 rounded-container shadow-sm">
+                        <h4 style="font-weight: bold" class="mb-4">Demande de proforma</h4>
                             <form action="/commercial/demande/insert.do" method="POST">
                                  <div class="mb-4 row">
                                     <label for="fournisseur" class="col-sm-2 col-form-label">Fournisseur</label>

@@ -124,7 +124,9 @@
                                 <% } %>
                               </tbody>
                             </table>
+                            <%if(dv.getProduits().length>0) { %>
                             <a class="btn" href="/commercial/demande/generer_proforma.do?id=<%=dv.getId()%>">Generer un proforma</a>
+                            <% } %>
                           </div>
                     </div>
                 </div>

@@ -25,9 +25,11 @@ public class ProformaController extends Proforma {
     @auth
     @url("proforma/insert.do")
     public ModelView insertProforma() throws Exception {
-        this.insert(null);
-        return new ModelView()
-                .sendRedirect("http://localhost:8080/commercial/proforma/liste-produit.do?id=" + this.getId());
+        try (Connection connection = this.getConnection()) {
+            this.insert(connection);
+            return new ModelView()
+                    .sendRedirect("http://localhost:8080/commercial/proforma/liste-produit.do?id=" + this.getId());
+        }
     }
 
     @auth
@@ -36,16 +38,18 @@ public class ProformaController extends Proforma {
         try (Connection connection = this.getConnection()) {
             return new ModelView("proforma/liste-produit-proforma")
                     .addItem("proforma", new Proforma().getProforma(this.getId(), connection))
-                    .addItem("produits", new Produit().findAll(connection, null));
+                    .addItem("produits", new Produit().findAll(null));
         }
     }
 
     @auth
     @url("proforma/ajout-produit.do")
     public ModelView ajouterProduit(String produit, String quantite, String prixUnitaire, String tva) throws Exception {
-        new Proforma().ajouterProduit(this.getId(), produit, quantite, prixUnitaire, tva);
-        return new ModelView()
-                .sendRedirect("http://localhost:8080/commercial/proforma/liste-produit.do?id=" + this.getId());
+        try (Connection connection = this.getConnection()) {
+            new Proforma().ajouterProduit(connection, this.getId(), produit, quantite, prixUnitaire, tva);
+            return new ModelView()
+                    .sendRedirect("http://localhost:8080/commercial/proforma/liste-produit.do?id=" + this.getId());
+        }
     }
 
     @auth
