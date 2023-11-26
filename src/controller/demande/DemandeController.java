@@ -48,6 +48,7 @@ public class DemandeController extends Demande {
             d.setFournisseur(getFournisseur());
             d.setDateDemande(new Date(System.currentTimeMillis()));
             d.insert(connection);
+            connection.commit();
             d = getFournisseur().getLastDemande(connection);
             return new ModelView()
                     .sendRedirect("http://localhost:8080/commercial/demande/liste-proforma.do?id="
