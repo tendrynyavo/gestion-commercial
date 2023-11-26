@@ -63,13 +63,13 @@ public class Demande extends BddObject {
         Demande d = new Demande();
         boolean connect = false;
         try {
-            Produit[] p = new Produit[0];
-            d = (Demande) new Demande().setId(id).getById(connection);
-            d.setProduits(p);
             if (connection == null) {
                 connection = this.getConnection();
                 connect = true;
             }
+            Produit[] p = new Produit[0];
+            d = (Demande) new Demande().setId(id).getById(connection);
+            d.setProduits(p);
             String sql = "select * from v_demande_proforma where id_demande_proforma = '%s' and etat=0";
             String sql2 = String.format(sql, id);
             System.out.println(sql2);
@@ -92,13 +92,13 @@ public class Demande extends BddObject {
         Demande d = new Demande();
         boolean connect = false;
         try {
-            Produit[] p = new Produit[0];
-            d = (Demande) new Demande().setId(id).getById(connection);
-            d.setProduits(p);
             if (connection == null) {
                 connection = this.getConnection();
                 connect = true;
             }
+            Produit[] p = new Produit[0];
+            d = (Demande) new Demande().setId(id).getById(connection);
+            d.setProduits(p);
             String sql = "select * from v_demande_proforma where id_demande_proforma = '%s' and etat=5";
             String sql2 = String.format(sql, id);
             System.out.println(sql2);
@@ -143,14 +143,26 @@ public class Demande extends BddObject {
         }
     }
 
-    public void ajouterProduit(String id, String article, String quantite) throws Exception {
-        try (Connection connection = this.getConnection()) {
+    public void ajouterProduit(String id, String article, String quantite, Connection connection) throws Exception {
+        boolean connect = false;
+        try {
+            if (connection == null) {
+                connection = this.getConnection();
+                connect = true;
+            }
             Demande demande = (Demande) new Demande().setId(id).getById(connection);
             Produit produit = new Produit();
             produit.setId(article);
             produit.setQuantite(quantite);
             demande.ajouterProduit(produit, connection);
             connection.commit();
+        } catch (Exception e) {
+            connection.rollback();
+            throw e;
+        } finally {
+            if (connect) {
+                connection.close();
+            }
         }
     }
 

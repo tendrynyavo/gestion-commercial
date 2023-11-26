@@ -154,22 +154,36 @@ public class Fournisseur extends BddObject {
 		return graph;
 	}
 
-	public Demande getLastDemande() throws Exception {
+	public Demande getLastDemande(Connection connection) throws Exception {
 		Demande s = new Demande();
-		try (Connection connection = this.getConnection()) {
+		boolean connect = false;
+		try {
+			if (connection == null) {
+				connection = this.getConnection();
+				connect = true;
+			}
 			String sql = "select * from demande_proforma where id_fournisseur = '%s' order by date_demande desc,id_demande_proforma desc limit 1";
 			String sql2 = String.format(sql, this.getId());
 			System.out.println(sql2);
 			s = (Demande) new Demande().getData(sql2, connection)[0];
 		} catch (Exception e) {
 			throw e;
+		} finally {
+			if (connect) {
+				connection.close();
+			}
 		}
 		return s;
 	}
 
-	public Demande[] getDemande() throws Exception {
+	public Demande[] getDemande(Connection connection) throws Exception {
 		Demande[] demande = new Demande[0];
-		try (Connection connection = this.getConnection()) {
+		boolean connect = false;
+		try {
+			if (connection == null) {
+				connection = this.getConnection();
+				connect = true;
+			}
 			String sql = "select * from demande_proforma where id_fournisseur = '%s'";
 			String sql2 = String.format(sql, this.getId());
 			System.out.println(sql2);
@@ -180,6 +194,10 @@ public class Fournisseur extends BddObject {
 			}
 		} catch (Exception e) {
 			throw e;
+		} finally {
+			if (connect) {
+				connection.close();
+			}
 		}
 		return demande;
 	}

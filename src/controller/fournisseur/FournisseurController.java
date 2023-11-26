@@ -58,9 +58,11 @@ public class FournisseurController extends Fournisseur {
     @auth
     @url("fournisseur/demande_proforma.do")
     public ModelView listproforma() throws Exception {
-        Fournisseur f = (Fournisseur) getSession().get("fournisseur");
-        return new ModelView("fournisseur/liste-demande-proforma")
-                .addItem("demande_proforma", new Fournisseur(f.getId()).getDemande());
+        try (Connection connection = this.getConnection()) {
+            Fournisseur f = (Fournisseur) getSession().get("fournisseur");
+            return new ModelView("fournisseur/liste-demande-proforma")
+                    .addItem("demande_proforma", new Fournisseur(f.getId()).getDemande(connection));
+        }
     }
 
     @session
@@ -70,7 +72,7 @@ public class FournisseurController extends Fournisseur {
         try (Connection connection = this.getConnection()) {
             Fournisseur f = (Fournisseur) getSession().get("fournisseur");
             return new ModelView("fournisseur/detail-demande")
-                    .addItem("demande_proforma", new Fournisseur(f.getId()).getDemande())
+                    .addItem("demande_proforma", new Fournisseur(f.getId()).getDemande(connection))
                     .addItem("demande", new Demande().getDemande(this.getId(), connection))
                     .addItem("demande_valide", new Demande().getDemandeValide(this.getId(), connection));
         }

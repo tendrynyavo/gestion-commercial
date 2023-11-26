@@ -50,11 +50,11 @@
                     </ul>
                 </div>
             </div>
-            <div class="col-sm p-3 min-vh-100">
-                <div class="row p-3">
-                    <div class="col">
-                        <div class="bg-white p-5 rounded-container shadow-sm">
-                            <h4 style="font-weight: bold" class="mb-4">Validation de proforma</h4>
+            <div class="col-md-6 mx-auto p-3 min-vh-100">
+            <div class="row p-3">
+                <div class="col">
+                    <div class="bg-white p-5 rounded-container shadow-sm">
+                        <h4 style="font-weight: bold" class="mb-4">Validation de proforma</h4>
                                 <div class="mb-4 row">
                                     <label for="description" class="col-sm-2 col-form-label">Societe</label>
                                     <div class="col-sm-10">
@@ -63,6 +63,7 @@
                                 </div>
                                 <h6 style="font-weight: bold" class="mb-4">Les produits</h6>
                                     <% for(int i=0;i<dd.getProduits().length;i++) { %>
+                                    <div class="mb-4 row">
                                     <form action="/commercial/demande/inserer_validation.do" method="POST">
                                         <input type="hidden" name="societe" value="<%=dd.getSociete().getId()%>">
                                         <input type="hidden" name="id" value="<%=dd.getId()%>">
@@ -96,6 +97,7 @@
                                             <button class="btn">Valider</button>
                                         </div>
                                     </form>
+                                    </div>
                                     <% }
                                     %>
                         </div>

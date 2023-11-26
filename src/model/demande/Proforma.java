@@ -155,10 +155,17 @@ public class Proforma extends BddObject {
 	// this.setPrimaryKeyName("id_proforma");
 	// }
 
-	public void ajouterProduit(String id, String article, String quantite, String prixUnitaire, String tva)
+	public void ajouterProduit(Connection connection, String id, String article, String quantite, String prixUnitaire,
+			String tva)
 			throws Exception {
-		try (Connection connection = this.getConnection()) {
-			Proforma proforma = (Proforma) new Proforma().setId(id);
+		boolean connect = false;
+		Proforma proforma = new Proforma();
+		try {
+			if (connection == null) {
+				connection = this.getConnection();
+				connect = true;
+			}
+			proforma = (Proforma) new Proforma().setId(id);
 			Produit produit = new Produit();
 			produit.setId(article);
 			produit.setQuantite(quantite);
@@ -166,24 +173,58 @@ public class Proforma extends BddObject {
 			produit.setTva(tva);
 			proforma.ajouterProduit(produit, connection);
 			connection.commit();
+		} catch (Exception e) {
+			connection.rollback();
+			throw e;
+		} finally {
+			if (connect) {
+				connection.close();
+			}
 		}
 	}
 
 	public void ajouterProduit(Produit produit, Connection connection) throws Exception {
-		produit.setProforma(this);
-		produit.setTable("detail_proforma");
-		produit.setSerial(false);
-		produit.insert(connection);
+		boolean connect = false;
+		try {
+			if (connection == null) {
+				connection = this.getConnection();
+				connect = true;
+			}
+			produit.setProforma(this);
+			produit.setTable("detail_proforma");
+			produit.setSerial(false);
+			produit.insert(connection);
+			connection.commit();
+		} catch (Exception e) {
+			connection.rollback();
+			throw e;
+		} finally {
+			if (connect) {
+				connection.close();
+			}
+		}
 	}
 
-	public void ajouterProduit(String id, String article, String quantite) throws Exception {
-		try (Connection connection = this.getConnection()) {
+	public void ajouterProduit(Connection connection, String id, String article, String quantite) throws Exception {
+		boolean connect = false;
+		try {
+			if (connection == null) {
+				connection = this.getConnection();
+				connect = true;
+			}
 			Proforma proforma = this.getProforma(id, connection);
 			Produit produit = new Produit();
 			produit.setId(article);
 			produit.setQuantite(quantite);
 			proforma.ajouterProduit(produit, connection);
 			connection.commit();
+		} catch (Exception e) {
+			connection.rollback();
+			throw e;
+		} finally {
+			if (connect) {
+				connection.close();
+			}
 		}
 	}
 
@@ -204,6 +245,8 @@ public class Proforma extends BddObject {
 			if (proforma != null) {
 				proforma.setProduits((Produit[]) produit.findAll(connection, "nom"));
 			}
+		} catch (Exception e) {
+			throw e;
 		} finally {
 			if (connect) {
 				connection.close();

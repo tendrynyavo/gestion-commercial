@@ -41,17 +41,18 @@ public class DemandeController extends Demande {
     @auth
     @url("demande/insert.do")
     public ModelView insertDemande() throws Exception {
-        Employe employe = (Employe) getSession().get("employe");
-        Demande d = new Demande();
-        d.setSociete(employe.getSociete());
-        d.setFournisseur(getFournisseur());
-        d.setDateDemande(new Date(System.currentTimeMillis()));
-        d.insert(null);
-        System.out.println(this.getId());
-        d = getFournisseur().getLastDemande();
-        return new ModelView()
-                .sendRedirect("http://localhost:8080/commercial/demande/liste-proforma.do?id="
-                        + d.getId());
+        try (Connection connection = this.getConnection()) {
+            Employe employe = (Employe) getSession().get("employe");
+            Demande d = new Demande();
+            d.setSociete(employe.getSociete());
+            d.setFournisseur(getFournisseur());
+            d.setDateDemande(new Date(System.currentTimeMillis()));
+            d.insert(connection);
+            d = getFournisseur().getLastDemande(connection);
+            return new ModelView()
+                    .sendRedirect("http://localhost:8080/commercial/demande/liste-proforma.do?id="
+                            + d.getId());
+        }
     }
 
     @auth
@@ -67,9 +68,11 @@ public class DemandeController extends Demande {
     @auth
     @url("demande/ajout-produit-proforma.do")
     public ModelView ajouterProduit(String produit, String quantite) throws Exception {
-        new Demande().ajouterProduit(this.getId(), produit, quantite);
-        return new ModelView()
-                .sendRedirect("http://localhost:8080/commercial/demande/liste-proforma.do?id=" + this.getId());
+        try (Connection connection = this.getConnection()) {
+            new Demande().ajouterProduit(this.getId(), produit, quantite, connection);
+            return new ModelView()
+                    .sendRedirect("http://localhost:8080/commercial/demande/liste-proforma.do?id=" + this.getId());
+        }
     }
 
     @session
@@ -78,13 +81,13 @@ public class DemandeController extends Demande {
     public ModelView checkStock(String idproduit, String quantite) throws Exception {
         try (Connection connection = this.getConnection()) {
             Fournisseur f = (Fournisseur) getSession().get("fournisseur");
-            double stock = f.checkStock(idproduit, this.getDateDemande(), null);
+            double stock = f.checkStock(idproduit, this.getDateDemande(), connection);
             double qtt = Double.parseDouble(quantite);
-            System.out.println("entree" + stock);
             if (stock >= qtt) {
                 this.validerProduit(idproduit, qtt, connection);
             } else {
-                throw new Exception("Votre stock pour ce produit est insuffisant");
+                return new ModelView("erreur/erreur")
+                        .addItem("Exception", new Exception("Votre stock pour ce produit est insuffisant"));
             }
             return new ModelView()
                     .sendRedirect("http://localhost:8080/commercial/fournisseur/detaildemande.do?id=" + this.getId());
@@ -104,7 +107,6 @@ public class DemandeController extends Demande {
             } else {
                 pf.setId(proforma);
             }
-            System.out.println("hh" + d.getSociete().getId());
             return new ModelView("proforma/validation")
                     .addItem("demande", d)
                     .addItem("proforma", pf);
@@ -117,13 +119,11 @@ public class DemandeController extends Demande {
     public ModelView valider(String proforma, String societe, String quantite, String produit, String pu, String tva)
             throws Exception {
         try (Connection connection = this.getConnection()) {
-            System.out.println(this.getId() + "vijk");
             Demande d = new Demande().getDemandeValide(this.getId(), connection);
             Proforma pf = new Proforma(proforma);
             pf.insertionDetail(societe, quantite, produit, pu, tva, connection);
             d.validerProduitProforma(produit, quantite, connection);
             d = new Demande().getDemandeValide(this.getId(), connection);
-            System.out.println(d.getProduits().length + "uij");
             if (d.getProduits().length > 0) {
                 return new ModelView()
                         .sendRedirect(
