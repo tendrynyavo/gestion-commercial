@@ -32,6 +32,8 @@ VALUES
    ('FOUR'||LPAD(NEXTVAL('s_fournisseur')::TEXT, 3, '0'), 'XYZ Supplies', 'xyz.supplies@email.com'),
    ('FOUR'||LPAD(NEXTVAL('s_fournisseur')::TEXT, 3, '0'), 'Global Tech Solutions', 'global.tech@email.com');
 
+update fournisseur set email='manoarysarobidy@gmail.com' where id_fournisseur ='FOUR001';
+update fournisseur set mot_de_passe='wumw rzpf xzif jzxr' where id_fournisseur ='FOUR001';
 
 insert into proforma values ('PRF00' || NEXTVAL('s_proforma') , '2023-10-10' , 'FOUR001');
 insert into proforma values ('PRF00' || NEXTVAL('s_proforma') , '2023-10-11' , 'FOUR002');
@@ -54,7 +56,7 @@ insert into detail_proforma values (default, 'ART005', 'PRF003', 30, 75000, 20);
 INSERT INTO societe (id_societe, nom_societe, email, mot_de_passe)
 VALUES
   ('SCT001', 'Societe1', 'societe1@example.com', 'motdepasse1'),
-  ('SCT002', 'Societe2', 'societe2@example.com', 'motdepasse2'),
+  ('SCT002', 'Societe2', 'malalanirina030304@gmail.com', 'motdepasse2'),
   ('SCT003', 'Societe3', 'societe3@example.com', 'motdepasse3'),
   ('SCT004', 'Societe4', 'societe4@example.com', 'motdepasse4');
 
