@@ -107,12 +107,12 @@
                                     <% } %>
                                 </tbody>
                               </table>
+                            <%if(demande.getProduits().length>0){%>
+                                    <div class="row">
+                                        <a href="/commercial/demande/proforma.do"><button class="btn">Valider</button></a>
+                                    </div>
+                            <% } %>
                         </div>
-                        <%if(demande.getProduits().length>0){%>
-                                <div class="row">
-                                    <a href="/commercial/demande/proforma.do"><button class="btn">Valider</button></a>
-                                </div>
-                        <% } %>
                     </div>
                 </div>
             </div>
