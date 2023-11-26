@@ -44,18 +44,19 @@ public class ProduitController extends Produit {
     @session
     @url("produit/liste-group.do")
     public ModelView listGroup() throws Exception {
-        try(Connection connection = new Produit().getConnection()){
+        try (Connection connection = new Produit().getConnection()) {
             return new ModelView("produit/liste-group")
-                .addItem("graph", new Graph(Produit.getProduitGroup("10", connection), Produit.getProduitGroup("15", connection)));
+                    .addItem("graph", new Graph(Produit.getProduitGroup("10", connection),
+                            Produit.getProduitGroup("15", connection)));
         }
     }
 
     @auth
     @url("produit/bon.do")
-    public ModelView generateBons() throws Exception{
+    public ModelView generateBons() throws Exception {
         Bon bon = new Bon();
         bon.generateBons();
         return new ModelView().sendRedirect("/commercial/produit/liste-group.do");
     }
-    
+
 }

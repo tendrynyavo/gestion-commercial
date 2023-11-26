@@ -5,7 +5,7 @@
         <port>5432</port>
         <database>commercial</database>
         <user>postgres</user>
-        <password>postgres</password>
+        <password>tiger</password>
     </connection>
     <connection name="ServerSQL">
         <host>localhost</host>

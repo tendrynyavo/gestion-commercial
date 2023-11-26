@@ -8,15 +8,13 @@ import model.produit.*;
 import model.validation.Validation;
 
 import java.util.ArrayList;
-import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
-import connection.Bdd;
 import connection.BddObject;
 import connection.annotation.*;
 import pl.allegro.finance.tradukisto.*;
 
 public class Bon extends Validation {
-	
+
 	@ColumnName("date_commande")
 	Date creation;
 	@ColumnName("date_livraison")
@@ -33,13 +31,13 @@ public class Bon extends Validation {
 	Produit[] produits;
 
 	// public void setMode( String paiement ){
-	// 	this.setPaiement(paiement);
+	// this.setPaiement(paiement);
 	// }
 	// public void setLivraison(String a){
-	// 	this.setLivraison(Date.valueOf(a));
+	// this.setLivraison(Date.valueOf(a));
 	// }
 	// public void setAvance(String avance){
-	// 	this.setAvance(Double.parseDouble(avance));
+	// this.setAvance(Double.parseDouble(avance));
 	// }
 
 	public String getEmail() {
@@ -58,115 +56,124 @@ public class Bon extends Validation {
 		this.nom = nom;
 	}
 
-	public Bon() throws Exception{
+	public Bon() throws Exception {
 		init();
 	}
 
-	public void setProduits(Produit[] ps){
+	public void setProduits(Produit[] ps) {
 		this.produits = ps;
 	}
-	public Produit[] getProduits(){
+
+	public Produit[] getProduits() {
 		return this.produits;
 	}
 
-	public void setCreation(Date creation){
+	public void setCreation(Date creation) {
 		this.creation = creation;
 	}
-	public Date getCreation(){
+
+	public Date getCreation() {
 		return this.creation;
 	}
 
-	public void setLivraison(Date creation){
+	public void setLivraison(Date creation) {
 		this.livraison = creation;
 	}
 
-	public void setLivraison(String creation){
+	public void setLivraison(String creation) {
 		this.setLivraison(Date.valueOf(creation));
 	}
-	public Date getLivraison(){
+
+	public Date getLivraison() {
 		return this.livraison;
 	}
 
-
-	public void setPaiement(String paiement){
+	public void setPaiement(String paiement) {
 		this.paiement = paiement;
 	}
-	public String getPaiement(){
+
+	public String getPaiement() {
 		return this.paiement;
 	}
 
-	public void setAvance(Double avance){
+	public void setAvance(Double avance) {
 		this.avance = avance;
 	}
-	public void setAvance(String avance){
+
+	public void setAvance(String avance) {
 		this.setAvance(Double.parseDouble(avance));
 	}
-	public Double getAvance(){
+
+	public Double getAvance() {
 		return this.avance;
 	}
 
-	public void setFournisseur(String fournisseur){
+	public void setFournisseur(String fournisseur) {
 		this.fournisseur = fournisseur;
 	}
-	public String getFournisseur(){
+
+	public String getFournisseur() {
 		return this.fournisseur;
 	}
 
-	public ArrayList<Produit> getSomeProducts(){
+	public ArrayList<Produit> getSomeProducts() {
 		return this.ps;
 	}
 
-	public ArrayList<Produit> getPs(){
+	public ArrayList<Produit> getPs() {
 		return this.getSomeProducts();
 	}
 
-	public void addProduct( Produit produit ){
-		if( this.getSomeProducts() == null ) this.ps = new ArrayList<Produit>();
+	public void addProduct(Produit produit) {
+		if (this.getSomeProducts() == null)
+			this.ps = new ArrayList<Produit>();
 		this.getSomeProducts().add(produit);
 	}
 
-	public void finalizeProducts(){
-		this.setProduits( this.getSomeProducts().toArray( new Produit[ this.getSomeProducts().size() ] ) );
+	public void finalizeProducts() {
+		this.setProduits(this.getSomeProducts().toArray(new Produit[this.getSomeProducts().size()]));
 		this.ps = null;
 	}
 
-	public void generateBons() throws Exception{
-		
+	public void generateBons() throws Exception {
 
 		Connection connection = this.getConnection();
-		
-		try{
+
+		try {
 
 			// Produit[] produits = new Produit().getProduitGroup(connection, "15");
 			Produit[] produits = new Produit().getProduits(connection, "15");
-			Fournisseur[] fournisseurs = (Fournisseur[]) new Fournisseur().findAll(connection, null); // Maka ny fournisseur rehetra
-			Proforma[] proformas = new Proforma().getProformas(connection, fournisseurs ); // Eto no maka ny proforma an'ny Fournisseur iray
+			Fournisseur[] fournisseurs = (Fournisseur[]) new Fournisseur().findAll(connection, null); // Maka ny
+																										// fournisseur
+																										// rehetra
+			Proforma[] proformas = new Proforma().getProformas(connection, fournisseurs); // Eto no maka ny proforma
+																							// an'ny Fournisseur iray
 
-			for( Produit produit : produits ){
-				
-				Proforma proforma = Proforma.moinDisant( proformas, produit );
+			for (Produit produit : produits) {
+
+				Proforma proforma = Proforma.moinDisant(proformas, produit);
 				Fournisseur f = proforma.getFournisseur();
 				int index = f.getFournisseur(fournisseurs, f);
-				if( produit.getPrix() != null && index >= 0) {
-					fournisseurs[index].addToBon( produit );
+				if (produit.getPrix() != null && index >= 0) {
+					fournisseurs[index].addToBon(produit);
 				}
 			}
 
-			for( int i = 0; i < fournisseurs.length ; i++ ){
-				fournisseurs[i].sendCommande( connection );
+			for (int i = 0; i < fournisseurs.length; i++) {
+				fournisseurs[i].sendCommande(connection);
 			}
 			connection.commit();
-		}catch(Exception e){
+		} catch (Exception e) {
 			connection.rollback();
 			// e.printStackTrace();
 			throw e;
-		}finally{
+		} finally {
 			connection.close();
 		}
 	}
 
-	public void save(Connection connection) throws Exception{
-		
+	public void save(Connection connection) throws Exception {
+
 		// Inona no tokony ataoko ato
 		// Sauvena any anatiny ilay izy
 		Produit[] ps = this.getProduits();
@@ -174,7 +181,7 @@ public class Bon extends Validation {
 		this.insert(connection);
 		String id = this.getId();
 
-		for( Produit p : ps ){
+		for (Produit p : ps) {
 			p.setNom(null);
 			p.setReference(null);
 			p.setUnite(null);
@@ -191,7 +198,7 @@ public class Bon extends Validation {
 		// Boucleko ilay produits rehetra de inserena ilay izy
 	}
 
-	void init() throws Exception{
+	void init() throws Exception {
 		this.setTable("bon_de_commande");
 		this.setPrefix("BON");
 		this.setConnection("PostgreSQL");
@@ -200,30 +207,32 @@ public class Bon extends Validation {
 		this.setCountPK(7);
 	}
 
-	public double getPrixHT() throws Exception{
+	public double getPrixHT() throws Exception {
 		double montant = 0.0;
-		for( Produit p : this.getProduits() ) montant = montant + p.getPrix();
+		for (Produit p : this.getProduits())
+			montant = montant + p.getPrix();
 		return montant;
 	}
 
-
-	public double getMontant() throws Exception{
+	public double getMontant() throws Exception {
 		double montant = 0.0;
-		for( Produit p : this.getProduits() ) montant = montant + p.getMontant();
+		for (Produit p : this.getProduits())
+			montant = montant + p.getMontant();
 		return montant;
 	}
 
-	public Double getTVATotal() throws Exception{
+	public Double getTVATotal() throws Exception {
 		double tva = 0;
-		for( Produit p : this.getProduits() ) tva = tva + p.getPrix();
+		for (Produit p : this.getProduits())
+			tva = tva + p.getPrix();
 		return (20 * tva) / 100.0;
 	}
 
 	// Inona daholo ny atao ato zao
 
-	public void modify( String mode, String date, String avance, String id ) throws Exception{
+	public void modify(String mode, String date, String avance, String id) throws Exception {
 		Connection connection = this.getConnection();
-		try{
+		try {
 			Bon bon = new Bon();
 			bon.setId(id);
 
@@ -233,17 +242,17 @@ public class Bon extends Validation {
 			bon.setAvance(avance);
 			bon.update(connection);
 			connection.commit();
-		}catch(Exception e){
+		} catch (Exception e) {
 			connection.rollback();
 			throw e;
-		}finally{
+		} finally {
 			connection.close();
 		}
 	}
 	/// mandeha aloha ny premiere validation
 	// Rehefa premiere validation de lasa status 10
 
-	Bon updateStatus(Connection connection, String status, String idBon) throws Exception{
+	Bon updateStatus(Connection connection, String status, String idBon) throws Exception {
 		Bon bon = new Bon();
 		bon.setId(idBon);
 		bon = (Bon) bon.getById(connection);
@@ -252,53 +261,52 @@ public class Bon extends Validation {
 		return bon;
 	}
 
-	public void passFirstValidation( String idBon ) throws Exception{
-		
+	public void passFirstValidation(String idBon) throws Exception {
+
 		Connection connection = this.getConnection();
-		try{
+		try {
 			this.updateStatus(connection, "10", idBon);
 			connection.commit();
-		}catch(Exception e){
+		} catch (Exception e) {
 			connection.rollback();
 			throw e;
-		}finally{
+		} finally {
 			connection.close();
 		}
 	}
 
-	public void passSecondValidation(String idBon) throws Exception{
+	public void passSecondValidation(String idBon) throws Exception {
 		Connection connection = this.getConnection();
-		try{
+		try {
 			this.updateStatus(connection, "20", idBon);
 			connection.commit();
-		}catch(Exception e){
+		} catch (Exception e) {
 			connection.rollback();
 			throw e;
-		}finally{
+		} finally {
 			connection.close();
-		}	
+		}
 	}
 
-	public void setDetails( Connection connection) throws Exception{
+	public void setDetails(Connection connection) throws Exception {
 		Produit produit = new Produit();
 		produit.setTable(String.format("v_detail_commande where id_commande = '%s'", this.getId()));
 		Produit[] produits = (Produit[]) produit.findAll(connection, null);
 		this.setProduits(produits);
 	}
 
-
 	// Ato izy no mila tenenina hoe alaivo daholo ny detail commande rehetra
-	public void passThirdValidation(String idBon) throws Exception{
+	public void passThirdValidation(String idBon) throws Exception {
 		Connection connection = this.getConnection();
-		try{
+		try {
 			Bon bon = this.updateStatus(connection, "25", idBon);
 			bon.setDetails(connection);
-			for( Produit p : bon.getProduits() ){
+			for (Produit p : bon.getProduits()) {
 				p.setStatus(20);
 				p.setTable("demande");
 				p.setPrimaryKeyName("id");
-				p.setPrix((Double)null);
-				p.setTva((Double)null);
+				p.setPrix((Double) null);
+				p.setTva((Double) null);
 				p.setId(p.getDemande());
 				p.setDemande(null);
 				p.setNom(null);
@@ -308,48 +316,50 @@ public class Bon extends Validation {
 				p.update(connection);
 			}
 			connection.commit();
-		}catch(Exception e){
+		} catch (Exception e) {
 			connection.rollback();
 			throw e;
-		}finally{
+		} finally {
 			connection.close();
-		}	
+		}
 	}
 
 	public Bon getBonDeCommande(String id, Connection connection) throws Exception {
-        boolean connect = false;
-        Bon bon = null;
-        try {
-			if (id == null) return null;
+		boolean connect = false;
+		Bon bon = null;
+		try {
+			if (id == null)
+				return null;
 			if (connection == null) {
 				connection = this.getConnection();
-                connect = true;
-            }
-            bon = (Bon) ((BddObject) new Bon().setTable("v_bon_commande_fournisseur")).setId(id).getById(connection);
+				connect = true;
+			}
+			bon = (Bon) ((BddObject) new Bon().setTable("v_bon_commande_fournisseur")).setId(id).getById(connection);
 			Produit produit = new Produit();
-            if (bon != null) {
+			if (bon != null) {
 				produit.setCommande(bon.getId());
 				produit.setTable("v_detail_commande_groupe");
 				bon.setProduits((Produit[]) produit.findAll(connection, "nom"));
-            }
-        } finally {
-            if (connect) {
-                connection.close();
-            }
-        }
-        return bon;
-    }
+			}
+		} finally {
+			if (connect) {
+				connection.close();
+			}
+		}
+		return bon;
+	}
 
-    public String getMontantAsLetter() throws Exception{
-    	MoneyConverters converter = MoneyConverters.FRENCH_BANKING_MONEY_VALUE;
-    	return converter.asWords( BigDecimal.valueOf(this.getMontant()) ).split("\\u20AC")[0];
-    }
+	public String getMontantAsLetter() throws Exception {
+		MoneyConverters converter = MoneyConverters.FRENCH_BANKING_MONEY_VALUE;
+		return converter.asWords(BigDecimal.valueOf(this.getMontant())).split("\\u20AC")[0];
+	}
 
-    // Inona ny eto
+	// Inona ny eto
 
-    public long livraisonToDays(){
-    	if( this.getLivraison() == null ) return 0;
+	public long livraisonToDays() {
+		if (this.getLivraison() == null)
+			return 0;
 		return ChronoUnit.DAYS.between(java.time.LocalDate.now(), this.getLivraison().toLocalDate());
-    }
+	}
 
 }

@@ -12,17 +12,17 @@
 <body>
     <div class="bg-white p-5 rounded-container w-50 mx-auto mt-5">
         <h4 style="font-weight: bold" class="mb-4">Login</h4>
-        <form action="/commercial/login/check.do" method="POST">
+        <form action="/commercial/login/check-fournisseur.do" method="POST">
             <div class="mb-4 row">
-                <label for="description" class="col-sm-2 col-form-label">Nom</label>
+                <label for="mail" class="col-sm-2 col-form-label">Email</label>
                 <div class="col-sm-10">
-                    <input type="text" name="nom" id="description" class="form-control" style="border-radius: 15px;" value="John">
+                    <input type="text" name="mail" id="mail" class="form-control" style="border-radius: 15px;" value="manoarysarobidy@gmail.com">
                 </div>
             </div>
             <div class="mb-4 row">
-                <label for="description" class="col-sm-2 col-form-label">Mot de passe</label>
+                <label for="motDePasse" class="col-sm-2 col-form-label">Mot de passe</label>
                 <div class="col-sm-10">
-                    <input type="password" name="password" id="description" class="form-control" style="border-radius: 15px;" value="password1">
+                    <input type="password" name="motDePasse" id="motDePasse" class="form-control" style="border-radius: 15px;" value="wumw rzpf xzif jzxr">
                 </div>
             </div>
             <div class="row">

@@ -41,8 +41,19 @@ CREATE TABLE Employe(
    date_naissance DATE,
    email VARCHAR(100)  NOT NULL,
    id_departement varchar(50),
+   id_fonction varchar(50),
    foreign key(id_departement) references Departement(id_departement),
+   foreign key(id_fonction) references fonction(id_fonction),
    PRIMARY KEY(id_employe)
+);
+
+CREATE SEQUENCE s_societe start WITH 1 INCREMENT BY 1;
+
+create table societe(
+   id_societe varchar(50) primary key,
+   nom_societe varchar(100),
+   email varchar(100),
+   mot_de_passe varchar(100)
 );
 
 
@@ -127,27 +138,16 @@ CREATE TABLE detail_commande(
    FOREIGN KEY(id_demande) REFERENCES Demande(id)
 );
 
-
-CREATE SEQUENCE s_Client start WITH 1 INCREMENT BY 1;
-
-CREATE TABLE Client(
-   id_client VARCHAR(50) ,
-   nom VARCHAR(100)  NOT NULL,
-   email VARCHAR(100)  NOT NULL,
-   mot_de_passe varchar(100),
-   PRIMARY KEY(id_client)
-);
-
 CREATE SEQUENCE s_proforma start WITH 1 INCREMENT BY 1;
 
 CREATE TABLE Proforma(
    id_proforma VARCHAR(50) ,
    date_proforma DATE,
    id_fournisseur VARCHAR(50)  NOT NULL,
-   id_client varchar(50) not null,
+   id_societe varchar(50),
    PRIMARY KEY(id_proforma),
    FOREIGN KEY(id_fournisseur) REFERENCES Fournisseur(id_fournisseur),
-   FOREIGN KEY(id_client) REFERENCES Client(id_client)
+   FOREIGN KEY(id_societe) REFERENCES societe(id_societe)
 );
 
 CREATE TABLE detail_proforma(
@@ -222,6 +222,19 @@ SELECT id_commande, id_produit, unite, prix_unitaire, tva, nom, reference, SUM(q
 FROM v_detail_commande
    GROUP BY id_commande, id_produit, unite, prix_unitaire, tva, nom, reference;
 ---------------------------------------------------------------------------------------------------------------------------------
+create table employe_societe(
+   id_employe varchar(50),
+   id_societe varchar(50),
+   date_debut date,
+   date_fin date,
+   foreign key(id_employe) references Employe(id_employe),
+   foreign key(id_societe) references societe(id_societe)
+);
+
+create or replace view v_societe as
+select es.id_employe,es.date_debut,es.date_fin,s.*
+ from employe_societe as es 
+ join societe as s on es.id_societe=s.id_societe where es.date_fin is null;
 
 CREATE SEQUENCE s_mouvement start WITH 1 INCREMENT BY 1;
 
@@ -232,24 +245,30 @@ create table mouvement(
    pu double precision,
    quantite double precision,
    type_mouvement int,
+   id_fournisseur varchar(50),
+   foreign key(id_fournisseur) references Fournisseur(id_fournisseur),
    foreign key(id_produit) references Produit(id_produit)
 );
 
+CREATE SEQUENCE s_demande_proforma start WITH 1 INCREMENT BY 1;
+
 create table demande_proforma(
-   id_demande_proforma serial primary key,
-   id_client varchar(50),
+   id_demande_proforma varchar(50) primary key,
+   id_societe varchar(50),
    id_fournisseur varchar(50),
    date_demande date,
-   foreign key(id_client) references Client(id_client),
+   foreign key(id_societe) references societe(id_societe),
    foreign key(id_fournisseur) references Fournisseur(id_fournisseur)
 );
 
 create table detail_demande_proforma(
    id_detail_demande serial primary key,
-   id_demande_proforma int,
+   id_demande_proforma varchar(50),
    id_produit varchar(50),
    quantite double precision,
-   foreign key(id_produit) references Produit(id_produit)
+   etat int,
+   foreign key(id_produit) references Produit(id_produit),
+   foreign key(id_demande_proforma) references demande_proforma(id_demande_proforma)
 );
 
 CREATE OR REPLACE VIEW entree as 
@@ -261,3 +280,13 @@ CREATE OR REPLACE VIEW sortie as
 select * 
 from mouvement 
 where type_mouvement=1;
+
+CREATE OR REPLACE VIEW v_demande_proforma as
+select dpf.*,p.nom,p.reference,p.unite,p.tva 
+from detail_demande_proforma as dpf 
+join produit as p on p.id_produit=dpf.id_produit;
+
+create or replace view v_detail_proforma as
+select d.*,p.nom,p.reference,p.unite 
+from detail_proforma as d
+join produit as p on p.id_produit=d.id_produit;
