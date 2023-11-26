@@ -49,3 +49,23 @@ insert into detail_proforma values (default, 'ART001', 'PRF003', 30, 3800000, 20
 insert into detail_proforma values (default, 'ART002', 'PRF003', 30, 1500000, 20);
 insert into detail_proforma values (default, 'ART003', 'PRF003', 30, 3000, 20);
 insert into detail_proforma values (default, 'ART005', 'PRF003', 30, 75000, 20);
+
+
+INSERT INTO societe (id_societe, nom_societe, email, mot_de_passe)
+VALUES
+  ('SCT001', 'Societe1', 'societe1@example.com', 'motdepasse1'),
+  ('SCT002', 'Societe2', 'societe2@example.com', 'motdepasse2'),
+  ('SCT003', 'Societe3', 'societe3@example.com', 'motdepasse3'),
+  ('SCT004', 'Societe4', 'societe4@example.com', 'motdepasse4');
+
+INSERT INTO employe_societe(id_employe, id_societe, date_debut)
+values
+   ('EMP001','SCT002','2023-01-01'),
+   ('EMP002','SCT003','2023-11-10'),
+   ('EMP003','SCT001','2023-12-04');
+
+insert into mouvement 
+values
+('MVT001','2020-01-01','ART001',2300,10,0,'FOUR001'),
+('MVT002','2020-10-01','ART001',2000,7,0,'FOUR001'),
+('MVT003','2020-01-11','ART001',2300,2,1,'FOUR001');

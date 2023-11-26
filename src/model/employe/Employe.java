@@ -1,9 +1,11 @@
 package model.employe;
 
+import java.sql.Connection;
 import java.sql.Date;
 import connection.BddObject;
 import connection.annotation.ColumnName;
 import model.departement.Departement;
+import model.societe.Societe;
 
 public class Employe extends BddObject {
 
@@ -93,7 +95,7 @@ public class Employe extends BddObject {
     public String getNomPrenom() {
         return this.getNom() + " " + this.getPrenom();
     }
-    
+
     public Employe() throws Exception {
         super();
         this.setTable("employe");
@@ -109,13 +111,27 @@ public class Employe extends BddObject {
         employe.setNom(nom);
         employe.setPassword(password);
         Employe[] employes = (Employe[]) employe.findAll(null);
-        if (employes.length == 0) throw new Exception("Nom ou mot de passe incorecte");
+        if (employes.length == 0)
+            throw new Exception("Nom ou mot de passe incorecte");
         return employes[0];
     }
 
     public static void main(String[] args) throws Exception {
-        Employe employe = Employe.login("John", "password");
-        System.out.println(employe);
+        Employe employe = Employe.login("John", "password1");
+        System.out.println(employe.getSociete().getNom());
     }
-    
+
+    public Societe getSociete() throws Exception {
+        Societe s = new Societe();
+        try (Connection connection = this.getConnection()) {
+            String sql = "select * from v_societe where id_employe = '%s'";
+            String sql2 = String.format(sql, this.getId());
+            System.out.println(sql2);
+            s = (Societe) new Societe().getData(sql2, connection)[0];
+        } catch (Exception e) {
+            throw e;
+        }
+        return s;
+    }
+
 }

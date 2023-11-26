@@ -1,7 +1,5 @@
 package model.produit;
 
-import connection.BddObject;
-import connection.Column;
 import connection.annotation.ColumnName;
 import model.besoin.Besoin;
 import model.demande.Proforma;
@@ -11,7 +9,6 @@ import model.validation.Validation;
 import java.math.RoundingMode;
 import java.sql.*;
 import java.text.DecimalFormat;
-import java.util.List;
 
 public class Produit extends Validation {
 
@@ -38,12 +35,14 @@ public class Produit extends Validation {
         this.departement = departement;
     }
 
-    public void setCommande(String commande){
+    public void setCommande(String commande) {
         this.commande = commande;
     }
-    public String getCommande(){
+
+    public String getCommande() {
         return this.commande;
     }
+
     public Proforma getProforma() {
         return proforma;
     }
@@ -53,41 +52,41 @@ public class Produit extends Validation {
 
     }
 
-    public double getTvaPrice(){
-        return (this.getTva() * this.getPrix()) / 100.0 ;
+    public double getTvaPrice() {
+        return (this.getTva() * this.getPrix()) / 100.0;
     }
-    public double getPrixTTC(){
+
+    public double getPrixTTC() {
         return this.getTvaPrice() + this.getPrix();
     }
 
-    public void setPrix(Double prix){
+    public void setPrix(Double prix) {
         this.prix = prix;
     }
 
-    public Double getMontant(){
+    public Double getMontant() {
         return this.getQuantite() * this.getPrixTTC();
     }
 
-    public void setPrix(String prix){
+    public void setPrix(String prix) {
         this.setPrix(Double.parseDouble(prix));
     }
 
-    public Double getPrix(){
+    public Double getPrix() {
         return this.prix;
     }
 
-    public void setTva( Double tva ){
+    public void setTva(Double tva) {
         this.tva = tva;
     }
 
-    public void setTva( String tva ){
+    public void setTva(String tva) {
         this.setTva(Double.parseDouble(tva));
     }
 
-    public Double getTva(){
+    public Double getTva() {
         return this.tva;
     }
-
 
     public String getDemande() {
         return demande;
@@ -162,15 +161,15 @@ public class Produit extends Validation {
         try (Connection connection = this.getConnection()) {
             try (Statement statement = connection.createStatement()) {
                 String sql = "UPDATE demande\n" +
-                "SET status = 15\n" +
-                "WHERE id IN (\n" +
-                   "SELECT id\n" +
-                   "FROM v_demande_departement v\n" +
-                   "WHERE\n" +
-                      "v.id_produit = '%s'\n" +
-                      "AND v.id_departement = '%s'\n" +
-                      "AND v.status = 10\n" +
-                ");";
+                        "SET status = 15\n" +
+                        "WHERE id IN (\n" +
+                        "SELECT id\n" +
+                        "FROM v_demande_departement v\n" +
+                        "WHERE\n" +
+                        "v.id_produit = '%s'\n" +
+                        "AND v.id_departement = '%s'\n" +
+                        "AND v.status = 10\n" +
+                        ");";
                 sql = String.format(sql, this.getId(), departement);
                 statement.executeUpdate(sql);
             }
@@ -203,8 +202,8 @@ public class Produit extends Validation {
     }
 
     // @Override
-    public boolean equals( Produit p ) throws Exception{
-        return String.valueOf(p.getId()).equals( String.valueOf(this.getId()));
+    public boolean equals(Produit p) throws Exception {
+        return String.valueOf(p.getId()).equals(String.valueOf(this.getId()));
     }
 
     public static String format(double number) {

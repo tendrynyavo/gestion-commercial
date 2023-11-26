@@ -19,14 +19,15 @@ public class ProformaController extends Proforma {
     @url("proforma/formulaire.do")
     public ModelView formulaire(String fournisseur) throws Exception {
         return new ModelView("proforma/creation-proforma")
-            .addItem("fournisseur", new Fournisseur(fournisseur));
+                .addItem("fournisseur", new Fournisseur(fournisseur));
     }
-    
+
     @auth
     @url("proforma/insert.do")
     public ModelView insertProforma() throws Exception {
         this.insert(null);
-        return new ModelView().sendRedirect("http://localhost:8080/commercial/proforma/liste-produit.do?id=" + this.getId());
+        return new ModelView()
+                .sendRedirect("http://localhost:8080/commercial/proforma/liste-produit.do?id=" + this.getId());
     }
 
     @auth
@@ -34,8 +35,8 @@ public class ProformaController extends Proforma {
     public ModelView listProduit() throws Exception {
         try (Connection connection = this.getConnection()) {
             return new ModelView("proforma/liste-produit-proforma")
-                .addItem("proforma", new Proforma().getProforma(this.getId(), connection))
-                .addItem("produits", new Produit().findAll(connection, null));
+                    .addItem("proforma", new Proforma().getProforma(this.getId(), connection))
+                    .addItem("produits", new Produit().findAll(connection, null));
         }
     }
 
@@ -43,7 +44,8 @@ public class ProformaController extends Proforma {
     @url("proforma/ajout-produit.do")
     public ModelView ajouterProduit(String produit, String quantite, String prixUnitaire, String tva) throws Exception {
         new Proforma().ajouterProduit(this.getId(), produit, quantite, prixUnitaire, tva);
-        return new ModelView().sendRedirect("http://localhost:8080/commercial/proforma/liste-produit.do?id=" + this.getId());
+        return new ModelView()
+                .sendRedirect("http://localhost:8080/commercial/proforma/liste-produit.do?id=" + this.getId());
     }
 
     @auth
@@ -51,8 +53,8 @@ public class ProformaController extends Proforma {
     public ModelView detail(String fournisseur) throws Exception {
         try (Connection connection = this.getConnection()) {
             return new ModelView("proforma/proforma-detail")
-                .addItem("fournisseur", new Fournisseur().getFournisseur(fournisseur, connection))
-                .addItem("proforma", new Proforma().getProforma(this.getId(), connection));
+                    .addItem("fournisseur", new Fournisseur().getFournisseur(fournisseur, connection))
+                    .addItem("proforma", new Proforma().getProforma(this.getId(), connection));
         }
     }
 
